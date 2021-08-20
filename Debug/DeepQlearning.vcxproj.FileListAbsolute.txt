@@ -1,0 +1,4 @@
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.vcxproj.CopyComplete
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\libcurl-d.dll
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\zlibd1.dll
