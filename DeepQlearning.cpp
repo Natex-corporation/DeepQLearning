@@ -7,14 +7,23 @@
 #include <string>
 #include <sstream>
 #include <curl/curl.h>
-//#include <csv.h>
-//#include "ParsingCsv.cpp"
-//#include <rapidcsv.h>
+#include <fstream>
 
 
 using namespace std;
+struct SeparateDays{
+	string Date;
+	float Open;
+	float High;
+	float Low;
+	float Close;
+	float Volume;
+	string Name;
+};
+vector < vector<SeparateDays>>StoredData;
 
 void DataLoading();
+void RWVString(vector<string> company);
 
 int main() {
 	int SampleSize = 10000;												//Add here the number of tries for choosing the company 
@@ -23,18 +32,58 @@ int main() {
 	int PercentageGain = 100;											//How many percent gained in the time frame
 	int StartingCapital = 100000;										//with how much money does the model start
 	vector <string> FilePaths;
-	string path = "LearningData";										//Location of training data
+	string Path = "LearningData";										//Location of training data
+	string TrainingControler;
 	
 
-	for (const auto& file : filesystem::directory_iterator(path)) {	//Creating vector including file paths to all trained companies
-		string CompanyName;
-		stringstream ss;
-		ss << file.path();
-		ss >> CompanyName;
-		FilePaths.push_back(CompanyName);
+	cout << "Do you want to train the model with the current data?" << endl << "Yes/No" << endl;
+	cin >> TrainingControler;
+
+	if (TrainingControler == "Y") {
+		for (const auto& file : filesystem::directory_iterator(Path)) {	//Creating vector including file paths to all trained companies
+			string CompanyName;
+			stringstream ss;
+			ss << file.path();
+			ss >> CompanyName;
+			FilePaths.push_back(CompanyName);
+		}
+		
+		for (int i = 0; i <= FilePaths.size(); i++) {
+			ifstream ip(FilePaths[i]);
+				if (!ip.is_open())
+				{
+					cout << "ERROR: File Open" << endl;
+				}
+		}
+		
+		for (int i = 0; i < SampleSize; i++) {
+		random_device dev;
+		mt19937 rng(dev());
+		//cout << FilePaths.size() << " This is the total amount of files" << endl;
+		uniform_int_distribution<std::mt19937::result_type> dist6(0,FilePaths.size()); 
+		int  FilePiccker;
+		//cout << dist6(rng) << endl;
+		FilePiccker = dist6(rng);
+		//cout << FilePiccker << "  " ;
+				
+		}
+		
+		RWVString(FilePaths);
 	}
 
-	CURL* hnd = curl_easy_init();
+	else {
+		cout << "Training data was skiped" << endl;
+	
+	}
+	
+	
+	
+	
+
+	
+
+	//DataLoading();*/
+	/*CURL* hnd = curl_easy_init();
 
 	curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
 	curl_easy_setopt(hnd, CURLOPT_URL, "https://twelve-data1.p.rapidapi.com/quote?symbol=AMZN&interval=1day&outputsize=30&format=json");
@@ -44,22 +93,7 @@ int main() {
 	headers = curl_slist_append(headers, "x-rapidapi-host: twelve-data1.p.rapidapi.com");
 	curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-	CURLcode ret = curl_easy_perform(hnd);
-
-
-	for (int i = 0; i < SampleSize; i++) {
-		random_device dev;
-		mt19937 rng(dev());
-		//cout << FilePaths.size() << " This is the total amount of files" << endl;
-		uniform_int_distribution<std::mt19937::result_type> dist6(0,FilePaths.size()); 
-		int  FilePiccker;
-		//cout << dist6(rng) << endl;
-		FilePiccker = dist6(rng);
-		cout << FilePiccker << "  " ;
-		
-	}
-
-	//DataLoading();*/
+	CURLcode ret = curl_easy_perform(hnd);*/
 }
 
 /*void DataLoading() {
@@ -80,6 +114,12 @@ int main() {
 	}
 	
 };*/
+
+void RWVString(vector<string> company) {
+	for (auto i = company.begin(); i != company.end(); ++i)
+		cout << *i << " ";
+
+}
 
 void AccuracyCalculation(int x, int y) {
 

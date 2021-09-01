@@ -18,8 +18,5 @@
     <ClCompile Include="DeepQlearning.cpp">
       <Filter>Zdrojové soubory</Filter>
     </ClCompile>
-    <ClCompile Include="ParsingCsv.cpp">
-      <Filter>Zdrojové soubory</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
