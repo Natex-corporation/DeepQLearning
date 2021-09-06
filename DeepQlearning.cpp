@@ -22,6 +22,47 @@ struct SeparateDays{
 };
 vector < vector<SeparateDays>>StoredData;
 
+using namespace std;
+
+class CSVRow {
+
+public:
+	string_view operator[](size_t index) const
+	{
+		return string_view(&m_line[m_data[index] + 1], m_data[index + 1] - (m_data[index] + 1));
+	}
+	size_t size() const
+	{
+		return m_data.size() - 1;
+	}
+	void readNextRow(istream& str)
+	{
+		getline(str, m_line);
+
+		m_data.clear();
+		m_data.emplace_back(-1);
+		string::size_type pos = 0;
+		while ((pos = m_line.find(',', pos)) != string::npos)
+		{
+			m_data.emplace_back(pos);
+			++pos;
+		}
+		// This checks for a trailing comma with no data after it.
+		pos = m_line.size();
+		m_data.emplace_back(pos);
+	}
+
+private:
+	string         m_line;
+	vector<int>    m_data;
+};
+
+istream& operator>>(istream& str, CSVRow& data)
+{
+	data.readNextRow(str);
+	return str;
+}
+
 void DataLoading();
 void RWVString(vector<string> company);
 
@@ -47,13 +88,22 @@ int main() {
 			ss >> CompanyName;
 			FilePaths.push_back(CompanyName);
 		}
+
 		
-		for (int i = 0; i <= FilePaths.size(); i++) {
-			ifstream ip(FilePaths[i]);
-				if (!ip.is_open())
-				{
+		for (int i = 0; i < FilePaths.size(); i++) {
+			FilePaths[i].erase(0, 1);
+			FilePaths[i].erase(FilePaths[i].size() - 1, 1);
+			string CompanyDirectory;
+			string TEST;
+			CompanyDirectory = FilePaths[i];
+			fstream ip;
+			
+			ip.open(CompanyDirectory/*"LearningData\\AAL_data.csv"*/);
+				if (!ip.is_open()) {
 					cout << "ERROR: File Open" << endl;
+					exit(EXIT_FAILURE);
 				}
+
 		}
 		
 		for (int i = 0; i < SampleSize; i++) {
@@ -68,7 +118,7 @@ int main() {
 				
 		}
 		
-		RWVString(FilePaths);
+		//RWVString(FilePaths);
 	}
 
 	else {
