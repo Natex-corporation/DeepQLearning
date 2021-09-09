@@ -20,7 +20,9 @@ struct SeparateDays{
 	float Volume;
 	string Name;
 };
-vector < vector<SeparateDays>>StoredData;
+//vector < vector<SeparateDays>>StoredData;
+
+vector <SeparateDays> AAL;
 
 using namespace std;
 
@@ -93,20 +95,58 @@ int main() {
 		for (int i = 0; i < FilePaths.size(); i++) {
 			FilePaths[i].erase(0, 1);
 			FilePaths[i].erase(FilePaths[i].size() - 1, 1);
-			string CompanyDirectory;
-			string TEST;
-			CompanyDirectory = FilePaths[i];
-			fstream ip;
-			
-			ip.open(CompanyDirectory/*"LearningData\\AAL_data.csv"*/);
+			ifstream ip;
+			cout << FilePaths[i];
+			ip.open(FilePaths[i]/*"LearningData\\AAL_data.csv"*/);
 				if (!ip.is_open()) {
 					cout << "ERROR: File Open" << endl;
 					exit(EXIT_FAILURE);
 				}
 
+				if (ip.is_open()) {
+					cout << "finaly" << endl;
+				}
+
+				CSVRow row;
+				while (ip >> row) {
+					string date;
+					float open;
+					float high;
+					float low;
+					float close;
+					int volume;
+					string name;
+					stringstream ss;
+					ss << row[0];
+					ss >> date;
+					stringstream aa;
+					aa << row[1];
+					aa >> open;
+					stringstream dd;
+					dd << row[2];
+					dd >> high;
+					stringstream cc;
+					cc << row[3];
+					cc >> low;
+					stringstream bb;
+					bb << row[4];
+					bb >> close;
+					stringstream ee;
+					ee << row[5];
+					ee >> volume;
+					stringstream ff;
+					ff << row[6];
+					ff >> name;
+					AAL.emplace_back(date, open, high, low, close, volume, name);
+					//.push_back(SeparateValues);
+					for (int i = 0; i < AAL.size() / 2; i++) {
+						cout << AAL.at(i).Open << ", " << AAL.at(i).Close << endl;
+					}
+				}
+
 		}
 		
-		for (int i = 0; i < SampleSize; i++) {
+		/*for (int i = 0; i < SampleSize; i++) {
 		random_device dev;
 		mt19937 rng(dev());
 		//cout << FilePaths.size() << " This is the total amount of files" << endl;
@@ -116,7 +156,7 @@ int main() {
 		FilePiccker = dist6(rng);
 		//cout << FilePiccker << "  " ;
 				
-		}
+		}*/
 		
 		//RWVString(FilePaths);
 	}
