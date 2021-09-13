@@ -1,28 +1,10 @@
 ﻿  DeepQlearning.cpp
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(95,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(142,24): warning C4018: <: signed/unsigned – neshoda
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xmemory(714,47): error C2661: SeparateDays::SeparateDays: Pro žádnou přetíženou funkci nejde používat 7 argumentů.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(721): message : Zobrazit odkaz na kompilované vytváření instancí funkce šablona void std::_Default_allocator_traits<_Alloc>::construct<_Ty,std::string&,float&,float&,float&,float&,int&,std::string&>(_Alloc &,_Objty *const ,std::string &,float &,float &,float &,float &,int &,std::string &)
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(105,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(144,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
           with
           [
-              _Alloc=std::allocator<SeparateDays>,
-              _Ty=SeparateDays,
-              _Objty=SeparateDays
+              _Ty=int
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(726): message : Zobrazit odkaz na kompilované vytváření instancí funkce šablona void std::_Default_allocator_traits<_Alloc>::construct<_Ty,std::string&,float&,float&,float&,float&,int&,std::string&>(_Alloc &,_Objty *const ,std::string &,float &,float &,float &,float &,int &,std::string &)
-          with
-          [
-              _Alloc=std::allocator<SeparateDays>,
-              _Ty=SeparateDays,
-              _Objty=SeparateDays
-          ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(739): message : Zobrazit odkaz na kompilované vytváření instancí funkce šablona _Ty &std::vector<_Ty,std::allocator<_Ty>>::_Emplace_back_with_unused_capacity<std::string&,float&,float&,float&,float&,int&,std::string&>(std::string &,float &,float &,float &,float &,int &,std::string &)
-          with
-          [
-              _Ty=SeparateDays
-          ]
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(140): message : Zobrazit odkaz na kompilované vytváření instancí funkce šablona _Ty &std::vector<_Ty,std::allocator<_Ty>>::emplace_back<std::string&,float&,float&,float&,float&,int&,std::string&>(std::string &,float &,float &,float &,float &,int &,std::string &)
-          with
-          [
-              _Ty=SeparateDays
-          ]
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(170,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(171,22): warning C4018: <: signed/unsigned – neshoda
+  DeepQlearning.vcxproj -> D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe

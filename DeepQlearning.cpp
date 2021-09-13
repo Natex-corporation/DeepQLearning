@@ -12,17 +12,24 @@
 
 using namespace std;
 struct SeparateDays{
-	string Date;
+	//string Date;
 	float Open;
 	float High;
 	float Low;
 	float Close;
-	float Volume;
-	string Name;
+	int Volume;
+	//string Name;
 };
 //vector < vector<SeparateDays>>StoredData;
 
-vector <SeparateDays> AAL;
+vector <float> Open;
+vector <float> High;
+vector <float> Low;
+vector <float> Close;
+vector <int> Volume;
+
+vector<SeparateDays> comp;
+vector<vector<SeparateDays>> All;
 
 using namespace std;
 
@@ -88,83 +95,95 @@ int main() {
 			stringstream ss;
 			ss << file.path();
 			ss >> CompanyName;
+			CompanyName.erase(0, 1);
+			CompanyName.erase(CompanyName.size() - 1, 1);
 			FilePaths.push_back(CompanyName);
+			
 		}
 
 		
 		for (int i = 0; i < FilePaths.size(); i++) {
-			FilePaths[i].erase(0, 1);
-			FilePaths[i].erase(FilePaths[i].size() - 1, 1);
-			ifstream ip;
-			cout << FilePaths[i];
-			ip.open(FilePaths[i]/*"LearningData\\AAL_data.csv"*/);
-				if (!ip.is_open()) {
-					cout << "ERROR: File Open" << endl;
-					exit(EXIT_FAILURE);
-				}
+			ifstream file(FilePaths[i]);
 
-				if (ip.is_open()) {
-					cout << "finaly" << endl;
-				}
+			if (!file.is_open()) {
+				cout << "ERROR: File Not Opend" << endl;
+				exit(EXIT_FAILURE);
+			}
 
-				CSVRow row;
-				while (ip >> row) {
-					string date;
-					float open;
-					float high;
-					float low;
-					float close;
-					int volume;
-					string name;
-					stringstream ss;
-					ss << row[0];
-					ss >> date;
-					stringstream aa;
-					aa << row[1];
-					aa >> open;
-					stringstream dd;
-					dd << row[2];
-					dd >> high;
-					stringstream cc;
-					cc << row[3];
-					cc >> low;
-					stringstream bb;
-					bb << row[4];
-					bb >> close;
-					stringstream ee;
-					ee << row[5];
-					ee >> volume;
-					stringstream ff;
-					ff << row[6];
-					ff >> name;
-					AAL.emplace_back(date, open, high, low, close, volume, name);
-					//.push_back(SeparateValues);
-					for (int i = 0; i < AAL.size() / 2; i++) {
-						cout << AAL.at(i).Open << ", " << AAL.at(i).Close << endl;
-					}
-				}
+			CSVRow row;
+			while (file >> row) {
+				float SeparateOpenPrice;
+				// cout << "4th Element(" << row[3] << ")\n";
+				stringstream ss;
+				ss << row[1];
+				ss >> SeparateOpenPrice;
+				Open.push_back(SeparateOpenPrice);
 
+				float SeparateHighPrice;
+				stringstream aa;
+				aa << row[2];
+				aa >> SeparateHighPrice;
+				High.push_back(SeparateHighPrice);
+
+				float SeparateLowPrice;
+				stringstream bb;
+				bb << row[3];
+				bb >> SeparateLowPrice;
+				Low.push_back(SeparateLowPrice);
+
+				float SeparateClosePrice;
+				stringstream cc;
+				cc << row[4];
+				cc >> SeparateClosePrice;
+				Close.push_back(SeparateClosePrice);
+
+				float SeparateVolumePrice;
+				stringstream dd;
+				dd << row[5];
+				dd >> SeparateVolumePrice;
+				Volume.push_back(SeparateVolumePrice);
+
+			}
+
+
+			for (size_t i = 0; i < Open.size(); i++) {
+				comp.push_back(SeparateDays{ Open[i], High[i], Low[i], Close[i], Volume[i] });
+			}
+
+			// for (int i = 0; i < comp.size(); ++i) {
+			 //cout << i << endl;
+			 //cout << comp.at(i).Open << "    " << comp.at(i).High << "    " << comp.at(i).Low << "    " << comp.at(i).Close << "    " << comp.at(i).Volume << endl;
+
+			 //}
+			cout << i << endl;
+			Open.clear();
+			High.clear();
+			Low.clear();
+			Close.clear();
+			Volume.clear();
+
+
+			All.push_back(comp);
+			comp.clear();
 		}
-		
-		/*for (int i = 0; i < SampleSize; i++) {
-		random_device dev;
-		mt19937 rng(dev());
-		//cout << FilePaths.size() << " This is the total amount of files" << endl;
-		uniform_int_distribution<std::mt19937::result_type> dist6(0,FilePaths.size()); 
-		int  FilePiccker;
-		//cout << dist6(rng) << endl;
-		FilePiccker = dist6(rng);
-		//cout << FilePiccker << "  " ;
-				
-		}*/
-		
-		//RWVString(FilePaths);
+
+		for (int i = 0; i < All.size(); i++) {
+			for (int j = 0; j < All[i].size(); j++) {
+				cout << All[i][j].Close << " " << endl;
+
+			}
+			cout << i << endl;
+		}
+
 	}
+	
+
 
 	else {
-		cout << "Training data was skiped" << endl;
+			cout << "Training data was skiped" << endl;
 	
-	}
+		}
+	
 	
 	
 	
@@ -186,25 +205,6 @@ int main() {
 	CURLcode ret = curl_easy_perform(hnd);*/
 }
 
-/*void DataLoading() {
-	string PointerOpneFile ("LearningData/");
-	string CompanyName ("ADBE_data.csv");
-	PointerOpneFile.append(CompanyName);
-
-	rapidcsv::Document doc(PointerOpneFile);
-	vector<float> OpeningPrice = doc.GetColumn<float>("open");
-	vector<float> HighestPrice = doc.GetColumn<float>("high");
-	vector<float> LowestPrice = doc.GetColumn<float>("low");
-	vector<float> ClosingPrice = doc.GetColumn<float>("close");
-	vector<int> VolumeTraded = doc.GetColumn<int>("volume");
-
-	cout << "Read " << ClosingPrice.size() << " values." << endl;
-	for (int i = 0; i < OpeningPrice.size(); i++) {
-		cout << OpeningPrice[i] << " " << HighestPrice[i] << " " << LowestPrice[i] << " " << ClosingPrice[i] << " " << VolumeTraded[i] << endl;
-	}
-	
-};*/
-
 void RWVString(vector<string> company) {
 	for (auto i = company.begin(); i != company.end(); ++i)
 		cout << *i << " ";
@@ -221,3 +221,7 @@ void AccuracyCalculation(int x, int y) {
 //   4. K zobrazení chyb použijte okno Seznam chyb.
 //   5. Pokud chcete vytvořit nové soubory kódu, přejděte na Projekt > Přidat novou položku. Pokud chcete přidat do projektu existující soubory kódu, přejděte na Projekt > Přidat existující položku.
 //   6. Pokud budete chtít v budoucnu znovu otevřít tento projekt, přejděte na Soubor > Otevřít > Projekt a vyberte příslušný soubor .sln.
+
+void RewardFunction() {
+
+}
