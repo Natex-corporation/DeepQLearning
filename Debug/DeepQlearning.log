@@ -7,4 +7,5 @@ D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cp
           ]
 D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(170,21): warning C4018: <: signed/unsigned – neshoda
 D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(171,22): warning C4018: <: signed/unsigned – neshoda
+  LINK : Soubor D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe se nenašel nebo se při posledním přírůstkovém propojování nesestavil. Provádí se úplné propojení.
   DeepQlearning.vcxproj -> D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe
