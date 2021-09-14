@@ -25,6 +25,7 @@ print(ListOfTickers[0:])
 print(ListOfFiles[0:])
 #Ticker loading and stoaring
 
+
 for x in ListOfTickers:
 
 
@@ -35,9 +36,9 @@ for x in ListOfTickers:
     tickerDf = tickerData.history(period='1d', start='1999-11-18', end='2020-1-25')
 
     #print (tickerDf)
-    with open('{}.csv'.format(x), 'w')as f_output:
-        tickerDf = tickerDf.iloc[: , :-1]
-        tickerDf.to_csv(f_output)
+    with open('test/{}.csv'.format(x), 'w')as f_output:
+        tickerDf = tickerDf.iloc[: , :-2]
+        tickerDf.to_csv(f_output, line_terminator='\n')
        
 #Gathering important date for each ticker
 #Data writing in to coresponding files
