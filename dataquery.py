@@ -36,6 +36,7 @@ for x in ListOfTickers:
 
     #print (tickerDf)
     with open('{}.csv'.format(x), 'w')as f_output:
+        tickerDf = tickerDf.iloc[: , :-1]
         tickerDf.to_csv(f_output)
        
 #Gathering important date for each ticker
