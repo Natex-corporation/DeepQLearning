@@ -1,11 +1,10 @@
 ﻿  DeepQlearning.cpp
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(105,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(144,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
+C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(105,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(144,22): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
           with
           [
               _Ty=int
           ]
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(170,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(171,22): warning C4018: <: signed/unsigned – neshoda
-  LINK : Soubor D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe se nenašel nebo se při posledním přírůstkovém propojování nesestavil. Provádí se úplné propojení.
-  DeepQlearning.vcxproj -> D:\AA tomovy výtvory\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe
+C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(170,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(171,22): warning C4018: '<': signed/unsigned mismatch
+  DeepQlearning.vcxproj -> C:\Users\nazle\Desktop\projekty\DeepQLearning\Debug\DeepQlearning.exe
