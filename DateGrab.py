@@ -79,6 +79,6 @@ if n == 1 :
     #print (tickerDf)
         with open('test/{}.csv'.format(x), 'w')as f_output:
             tickerDf = tickerDf.iloc[: , :-2]
-            tickerDf.to_csv(f_output, line_terminator='\n')
+            tickerDf.to_csv(f_output,'a', line_terminator='\n')
 
 today
