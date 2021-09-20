@@ -1,10 +1,10 @@
 ﻿  DeepQlearning.cpp
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(105,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(144,22): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(107,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(146,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
           with
           [
               _Ty=int
           ]
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(170,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(171,22): warning C4018: '<': signed/unsigned mismatch
-  DeepQlearning.vcxproj -> C:\Users\nazle\Desktop\projekty\DeepQLearning\Debug\DeepQlearning.exe
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(172,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(173,22): warning C4018: <: signed/unsigned – neshoda
+  DeepQlearning.vcxproj -> D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe

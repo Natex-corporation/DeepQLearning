@@ -8,6 +8,8 @@
 #include <sstream>
 #include <curl/curl.h>
 #include <fstream>
+#include <filesystem>
+#include <string_view>
 
 
 using namespace std;
@@ -82,7 +84,7 @@ int main() {
 	int PercentageGain = 100;											//How many percent gained in the time frame
 	int StartingCapital = 100000;										//with how much money does the model start
 	vector <string> FilePaths;
-	string Path = "LearningData";										//Location of training data
+	string Path = /*"LearningData"*/ "test";										//Location of training data
 	string TrainingControler;
 	
 
@@ -169,7 +171,7 @@ int main() {
 
 		for (int i = 0; i < All.size(); i++) {
 			for (int j = 0; j < All[i].size(); j++) {
-				cout << All[i][j].Close << " " << endl;
+				cout << All[i][j].Close << " " << All[i][j].Open << endl;
 
 			}
 			cout << i << endl;
