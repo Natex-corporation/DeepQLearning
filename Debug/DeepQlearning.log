@@ -1,10 +1,9 @@
 ﻿  DeepQlearning.cpp
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(107,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(146,22): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(107,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(146,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
           with
           [
               _Ty=int
           ]
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(191,11): warning C4552: '+': result of expression not used
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(186,10): warning C4101: 'ZLongScore': unreferenced local variable
-C:\Users\nazle\Desktop\projekty\DeepQLearning\DeepQlearning.cpp(193): error C4700: uninitialized local variable 'XLine' used
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(186,10): warning C4101: ZLongScore: neodkazovaná lokální proměnná
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(191): error C4700: používá se neinicializovaná lokální proměnná XLine
