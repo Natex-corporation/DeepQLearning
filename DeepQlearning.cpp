@@ -8,6 +8,7 @@
 #include <sstream>
 #include <curl/curl.h>
 #include <fstream>
+#include <numeric>
 
 
 using namespace std;
@@ -76,9 +77,10 @@ void DataLoading();
 void RWVString(vector<string> company);
 
 int main() {
-	int SampleSize = 10000;												//Add here the number of tries for choosing the company 
+	int SampleSize = 1;												//Add here the number of tries for choosing the company 
 	int LengthOfTrainingPeriod = 365;									//How many days are wee leting the model train
 	int NumberOfRepetitions = 5;										//How many times to look at the specified time period
+	
 	int PercentageGain = 100;											//How many percent gained in the time frame
 	int StartingCapital = 100000;										//with how much money does the model start
 	vector <string> FilePaths;
@@ -167,12 +169,30 @@ int main() {
 			comp.clear();
 		}
 
-		for (int i = 0; i < All.size(); i++) {
+		/*for (int i = 0; i < All.size(); i++) {
 			for (int j = 0; j < All[i].size(); j++) {
 				cout << All[i][j].Close << " " << endl;
 
 			}
 			cout << i << endl;
+		}*/
+
+		for (int i = 0; i <= SampleSize; i++) {
+			random_device dev;
+			mt19937 rng(dev());
+			uniform_int_distribution<mt19937::result_type> dist6(0, All[0].size() - (LengthOfTrainingPeriod - 1)); // distribution in range [1, 6]
+			int random = dist6(rng);
+			cout << "random: " << random << endl;
+			float ZLongScore; int n = LengthOfTrainingPeriod;
+			float XLine;
+
+			for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+				cout << All[0][random + i].Open << endl;
+				XLine + All[0][random + i].Open;
+			}
+			cout << XLine;
+			//cout << All[0][random].Open;
+			//cout << dist6(rng) << endl;
 		}
 
 	}
@@ -184,13 +204,6 @@ int main() {
 	
 		}
 	
-	
-	
-	
-	
-
-	
-
 	//DataLoading();*/
 	/*CURL* hnd = curl_easy_init();
 
@@ -205,22 +218,20 @@ int main() {
 	CURLcode ret = curl_easy_perform(hnd);*/
 }
 
+/////////////////////////////functions//////////////////////////
+
+/*float ZScore(vector<vector<SeparateDays>> All, int LengthOfTrainingPeriod) {
+	for (int i = 0; i <= LengthOfTrainingPeriod; i++) {
+
+	}
+	return y;
+}*/
+
 void RWVString(vector<string> company) {
 	for (auto i = company.begin(); i != company.end(); ++i)
 		cout << *i << " ";
 
 }
-
-void AccuracyCalculation(int x, int y) {
-
-}
-// Tipy pro zahájení práce:
-//   1. K přidání nebo správě souborů použijte okno Průzkumník řešení.
-//   2. Pro připojení ke správě zdrojového kódu použijte okno Team Explorer.
-//   3. K zobrazení výstupu sestavení a dalších zpráv použijte okno Výstup.
-//   4. K zobrazení chyb použijte okno Seznam chyb.
-//   5. Pokud chcete vytvořit nové soubory kódu, přejděte na Projekt > Přidat novou položku. Pokud chcete přidat do projektu existující soubory kódu, přejděte na Projekt > Přidat existující položku.
-//   6. Pokud budete chtít v budoucnu znovu otevřít tento projekt, přejděte na Soubor > Otevřít > Projekt a vyberte příslušný soubor .sln.
 
 void RewardFunction() {
 
