@@ -8,11 +8,12 @@ import os
 import time
 import datetime
 import yfinance as yf
+import clearing
 
 
 ##################################################################
 
-df = pd.read_csv("test\A.csv")
+df = pd.read_csv("LearningData\AAL_data.csv")
 today = date.today()
 bottom = df.tail(1)
 
@@ -49,11 +50,13 @@ else:
             print ("same day ")
 
 if n == 1 :
-    path = 'LearningData'
+    path = 'LearningData'#'test'
+    test = 'test'
     ListOfTickers = []
     ListOfFiles = []
 
     obj = os.scandir(path)
+    test = os.scandir(test)
 
     print("files in direcotry '% s':" % path)
     for entry in obj :
@@ -62,7 +65,7 @@ if n == 1 :
             ListOfFiles.append(entry.name)
 
 
-    print(ListOfTickers[0:]) 
+    #print(ListOfTickers[0:]) 
     print(ListOfFiles[0:])
 #Ticker loading and stoaring
 
@@ -73,12 +76,14 @@ if n == 1 :
 #get data on this ticker
         tickerData = yf.Ticker(x)
 
+
 #get the historical prices for this ticker
-        tickerDf = tickerData.history(period='1d', start=selact_date, end=today)
+        tickerDf = tickerData.history(period='1d', start='1999-01-01', end=today)
 
     #print (tickerDf)
         with open('test/{}.csv'.format(x), 'w')as f_output:
             tickerDf = tickerDf.iloc[: , :-2]
-            tickerDf.to_csv(f_output,'a', line_terminator='\n')
+            tickerDf.to_csv(f_output, line_terminator='\n')
 
-today
+
+
