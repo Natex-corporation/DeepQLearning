@@ -73,8 +73,6 @@ istream& operator>>(istream& str, CSVRow& data)
 	return str;
 }
 
-void DataLoading();
-void RWVString(vector<string> company);
 
 int main() {
 	int SampleSize = 1;												//Add here the number of tries for choosing the company 
@@ -177,20 +175,21 @@ int main() {
 			cout << i << endl;
 		}*/
 
-		for (int i = 0; i <= SampleSize; i++) {
+		for (int i = 1; i <= SampleSize; i++) {
 			random_device dev;
 			mt19937 rng(dev());
 			uniform_int_distribution<mt19937::result_type> dist6(0, All[0].size() - (LengthOfTrainingPeriod - 1)); // distribution in range [1, 6]
 			int random = dist6(rng);
 			cout << "random: " << random << endl;
 			float ZLongScore; int n = LengthOfTrainingPeriod;
-			float XLine;
+			//cout << "lool";
+			float XLine = 0;
 
 			for (int i = 0; i < LengthOfTrainingPeriod; i++) {
-				cout << All[0][random + i].Open << endl;
-				XLine = XLine + All[0][random + i].Open;
+				cout << All[0][0 + i].Open << endl;
+				XLine = XLine + All[0][0 + i].Open;
 			}
-			cout << XLine;
+			cout << "XLine" << XLine << endl;
 			//cout << All[0][random].Open;
 			//cout << dist6(rng) << endl;
 		}
@@ -220,19 +219,3 @@ int main() {
 
 /////////////////////////////functions//////////////////////////
 
-/*float ZScore(vector<vector<SeparateDays>> All, int LengthOfTrainingPeriod) {
-	for (int i = 0; i <= LengthOfTrainingPeriod; i++) {
-
-	}
-	return y;
-}*/
-
-void RWVString(vector<string> company) {
-	for (auto i = company.begin(); i != company.end(); ++i)
-		cout << *i << " ";
-
-}
-
-void RewardFunction() {
-
-}
