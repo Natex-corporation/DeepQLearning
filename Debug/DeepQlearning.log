@@ -1,9 +1,10 @@
 ﻿  DeepQlearning.cpp
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(105,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(144,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(113,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(152,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
           with
           [
               _Ty=int
           ]
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(184,10): warning C4101: ZLongScore: neodkazovaná lokální proměnná
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(218,26): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(240,11): warning C4101: ZLongScore: neodkazovaná lokální proměnná
   DeepQlearning.vcxproj -> D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe

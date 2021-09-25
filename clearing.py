@@ -20,3 +20,4 @@ for x in ListOfTickers:
     if df.empty == True:
         os.remove('test/{}'.format(x))
         print ("empty")
+ 
