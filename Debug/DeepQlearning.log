@@ -5,6 +5,6 @@ D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cp
           [
               _Ty=int
           ]
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(218,26): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(240,11): warning C4101: ZLongScore: neodkazovaná lokální proměnná
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(315,26): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(337,11): warning C4101: ZLongScore: neodkazovaná lokální proměnná
   DeepQlearning.vcxproj -> D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe

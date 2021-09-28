@@ -78,7 +78,7 @@ istream& operator>>(istream& str, CSVRow& data)
 
 
 int main() {
-	int SampleSize = 1;													//Add here the number of tries for choosing the company 
+	int SampleSize = 1000;													//Add here the number of tries for choosing the company 
 	int LengthOfTrainingPeriod = 365;									//How many days are wee leting the model train
 	int NumberOfRepetitions = 5;										//How many times to look at the specified time period
 	
@@ -186,19 +186,116 @@ int main() {
 			cout << "RandomFilePicker: " << RandomFilePicker << endl;
 
 			for (int i = 1; i <= NumberOfRepetitions; i++) {																			// Random Range picker
-				vector <float> InputNodeOpen;
-				vector <float> InputNodeClose;
-			
+				cout << All[RandomFilePicker].size() - (LengthOfTrainingPeriod - 1) << "before random" << "\n";
+				cout << All[RandomFilePicker].size() << "size at index random file" << "\n";
 				random_device dev;
 				mt19937 rng(dev());
 				uniform_int_distribution<mt19937::result_type> dist6(0, All[RandomFilePicker].size() - (LengthOfTrainingPeriod - 1));	 // distribution range of 
-				int random = dist6(rng);
-				cout << "random: " << random << endl;
+				int RandomStartingPoint = dist6(rng);
+				cout << "random: " << RandomStartingPoint << endl;
+
+				//Input Preparation
+				vector <float> InputNodeOpen;
+				vector <float> InputNodeClose;
+				vector <float> InputNodeHigh;
+				vector <float> InputNodeLow;
+				vector <int> InputNodeVolume;
+				vector <long double> ZScore;
+				struct MovingZScores {
+						long double ZScore5;
+						long double ZScore10;
+						long double ZScore30;
+						//long double CloseZScore;
+						//long double VolumeZScore;
+				};
+				vector<MovingZScores> OpenMovingZscores;
+				vector<MovingZScores> Day10MovingZscores;
+				vector<MovingZScores> Day30MovingZscores;
+
+				cout << "am here" << "\n";
 
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
-					InputNodeOpen.push_back(All[RandomFilePicker][random + i].Open);
-					InputNodeClose.push_back(All[RandomFilePicker][random + i].Close);
+					InputNodeOpen.push_back(All[RandomFilePicker][RandomStartingPoint + i].Open);
+					InputNodeClose.push_back(All[RandomFilePicker][RandomStartingPoint + i].Close);
+					InputNodeHigh.push_back(All[RandomFilePicker][RandomStartingPoint + i].High);
+					InputNodeLow.push_back(All[RandomFilePicker][RandomStartingPoint + i].Low);
+					InputNodeVolume.push_back(All[RandomFilePicker][RandomStartingPoint + i].Volume);
 				}
+
+				cout << "here am i" << "\n";
+
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					double S5um = 0;
+					double M5ean = 0;
+					double S10um = 0;
+					double M10ean = 0;
+					double S30um = 0;
+					double M30ean = 0;
+					double St5deviation = 0;
+					double St10deviation = 0;
+					double St30deviation = 0;
+					double Sum = 0;
+					double sUm = 0;
+					double suM = 0;
+
+					cout << "lol" << "\n";
+
+
+					for (int i = 0; i < 5; i++) {
+						if (RandomStartingPoint < 5) {
+							S5um = S5um + All[RandomFilePicker][i].Open;
+							cout << "too small" << "\n";
+						}
+						else {
+							S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open;
+						}
+						//S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open;
+						cout << All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open << "\n";
+					}
+					cout << "first sume done" << "\n";
+					for (int i = 0; i < 10; i++) {
+						if (RandomStartingPoint < 10) {
+							S10um = S10um + All[RandomFilePicker][i].Open;
+							cout << "too small" << "\n";
+						}
+						else {
+							S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open;
+						}
+						//S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open;
+						cout << All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open << "\n";
+					}
+					cout << "second sum is done" << "\n";
+					for (int i = 0; i < 30; i++) {
+						if (RandomStartingPoint < 30) {
+							S30um = S30um + All[RandomFilePicker][i].Open;
+							cout << "too small" << "\n";
+						}
+						else {
+							S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open;
+						}
+						
+						cout << All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open << "\n";
+					}
+
+					cout << "the sum of is done" << "\n";
+
+					M5ean = S5um / 5;
+					M10ean = S10um / 10;
+					M30ean = S30um / 30;
+
+					for (int i = 0; i < 5; i++) {
+						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open - M5ean, 2);
+					}
+					for (int i = 0; i < 10; i++) {
+						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open - M10ean, 2);
+					}
+					for (int i = 0; i < 30; i++) {
+						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open - M30ean, 2);
+					}
+
+					OpenMovingZscores.push_back({ sqrt(Sum / 4), sqrt(sUm / 9), sqrt(suM / 29) });
+				}
+
 
 				cout << InputNodeClose.size() << "\n";
 
@@ -229,7 +326,7 @@ int main() {
 					a = InputNodeClose[i] * ZerothLayer[i] + InputNodeOpen[i] * ZerothLayer[i + 1];
 					b = InputNodeClose[i] * ZerothLayer[i + 2] + InputNodeOpen[i] * ZerothLayer[i + 3];
 					
-					a = 1 / (1 + pow(e, -a));
+					a = 1 / (1 + pow(e, -a));			//must use Relu instead
 					b = 1 / (1 + pow(e, -b));
 					cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
 				}
@@ -268,6 +365,10 @@ void shrink(vector<float>Vector) {
 		}
 	}
 	
+}
+
+void CostFunction() {
+
 }
 	
 
