@@ -176,6 +176,20 @@ int main() {
 			cout << i << endl;
 		}*/	
 
+		for (int i = 0; i < All.size(); i++) {
+			if (All[i].size() < LengthOfTrainingPeriod) {
+				All.erase(All.begin() +i);
+			}
+			else {
+				cout << "vectro is long enough" << "\n";
+			}
+		}
+
+		for (int i = 0; i < All.size(); i++) {
+			cout << i <<"All[i].size: " << All[i].size() << "\n";
+		}
+
+
 
 
 		for (int i = 1; i <= SampleSize; i++) {																							// Random file picker
@@ -186,13 +200,21 @@ int main() {
 			cout << "RandomFilePicker: " << RandomFilePicker << endl;
 
 			for (int i = 1; i <= NumberOfRepetitions; i++) {																			// Random Range picker
-				cout << All[RandomFilePicker].size() - (LengthOfTrainingPeriod - 1) << "before random" << "\n";
+				int Result = 0;
+				int MaxLength = 0;
+				int OffsetFromEnd = 0;
+				MaxLength = All[RandomFilePicker].size();
+				OffsetFromEnd = LengthOfTrainingPeriod + 1;
+				Result = MaxLength - OffsetFromEnd;
+				cout << "Max Length: " << MaxLength << "\n" << "OffsetFromEnd: " << OffsetFromEnd << "\n" << "Result: " << Result << "\n";
+				cout << All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1) << "before random" << "\n";
 				cout << All[RandomFilePicker].size() << "size at index random file" << "\n";
+				
 				random_device dev;
 				mt19937 rng(dev());
-				uniform_int_distribution<mt19937::result_type> dist6(0, All[RandomFilePicker].size() - (LengthOfTrainingPeriod - 1));	 // distribution range of 
+				uniform_int_distribution<mt19937::result_type> dist6(30, All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1));	 // distribution range of 
 				int RandomStartingPoint = dist6(rng);
-				cout << "random: " << RandomStartingPoint << endl;
+				cout << "randomstarting point: " << RandomStartingPoint << endl;
 
 				//Input Preparation
 				vector <float> InputNodeOpen;
@@ -216,10 +238,15 @@ int main() {
 
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
 					InputNodeOpen.push_back(All[RandomFilePicker][RandomStartingPoint + i].Open);
+					//cout << "Open: " << All[RandomFilePicker][RandomStartingPoint + i].Open << "\n";
 					InputNodeClose.push_back(All[RandomFilePicker][RandomStartingPoint + i].Close);
+					//cout << "Close: " << All[RandomFilePicker][RandomStartingPoint + i].Close << "\n";
 					InputNodeHigh.push_back(All[RandomFilePicker][RandomStartingPoint + i].High);
+					//cout << "High: " << All[RandomFilePicker][RandomStartingPoint + i].High << "\n";
 					InputNodeLow.push_back(All[RandomFilePicker][RandomStartingPoint + i].Low);
+					//cout << "Low: " << All[RandomFilePicker][RandomStartingPoint + i].Low << "\n";
 					InputNodeVolume.push_back(All[RandomFilePicker][RandomStartingPoint + i].Volume);
+					//cout << "One cycle done" << i << "\n";
 				}
 
 				cout << "here am i" << "\n";
@@ -238,10 +265,37 @@ int main() {
 					double sUm = 0;
 					double suM = 0;
 
-					cout << "lol" << "\n";
+					//cout << "lol" << "\n";
 
+					if (RandomStartingPoint < 5) {
+						for (int i = 0; i < 5; i++)	{
+							S5um = S5um + All[RandomFilePicker][i].Open;
+							cout << "too small" << "\n";
+						}
+						for (int i = 0; i < 10; i++) {
+							S10um = S10um + All[RandomFilePicker][i].Open;
+							cout << "too small" << "\n";
+						}
+						for (int i = 0; i < 30; i++) {
+							S30um = S30um + All[RandomFilePicker][i].Open;
+							cout << "too small" << "\n";
+						}
+					}
 
-					for (int i = 0; i < 5; i++) {
+					else {
+						for (int i = 0; i < 5; i++) {
+							S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open;
+						}
+						for (int i = 0; i < 10; i++) {
+							S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open;
+						}
+						for (int i = 0; i < 30; i++) {
+							S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open;
+						}
+					}
+
+					
+					/*for (int i = 0; i < 5; i++) {
 						if (RandomStartingPoint < 5) {
 							S5um = S5um + All[RandomFilePicker][i].Open;
 							cout << "too small" << "\n";
@@ -275,9 +329,9 @@ int main() {
 						}
 						
 						cout << All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open << "\n";
-					}
+					}*/
 
-					cout << "the sum of is done" << "\n";
+					//cout << "the sum of is done" << "\n";
 
 					M5ean = S5um / 5;
 					M10ean = S10um / 10;
@@ -328,7 +382,7 @@ int main() {
 					
 					a = 1 / (1 + pow(e, -a));			//must use Relu instead
 					b = 1 / (1 + pow(e, -b));
-					cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
+					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
 				}
 
 
