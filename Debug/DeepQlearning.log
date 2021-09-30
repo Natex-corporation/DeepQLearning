@@ -1,13 +1,15 @@
 ﻿  DeepQlearning.cpp
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(113,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(152,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(118,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(157,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
           with
           [
               _Ty=int
           ]
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(179,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(180,22): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(188,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(369,26): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(391,11): warning C4101: ZLongScore: neodkazovaná lokální proměnná
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(184,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(185,22): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(194,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(195,22): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(204,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(569,23): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(595,26): warning C4018: <: signed/unsigned – neshoda
   DeepQlearning.vcxproj -> D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe

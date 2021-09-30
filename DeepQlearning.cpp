@@ -9,11 +9,16 @@
 #include <curl/curl.h>
 #include <fstream>
 #include <numeric>
+#include <cstdio>
+#include <iomanip>
+#include <ctime>
+
 
 
 using namespace std;
 
 void shrink(vector<float>Vector);
+//vector<MovingZScores> Zmoving(int LengthOfTrainingPeriod, int RandomFilePicker, int RandomStartingPoint, vector < MovingZScores>& Zscores);
 
 struct SeparateDays{
 	//string Date;
@@ -177,8 +182,19 @@ int main() {
 		}*/	
 
 		for (int i = 0; i < All.size(); i++) {
-			if (All[i].size() < LengthOfTrainingPeriod) {
-				All.erase(All.begin() +i);
+			if (All[i].size() < (LengthOfTrainingPeriod + 30)) {
+				All.erase(All.begin() + i);
+				cout << All[i].size() << " this is too small" << i <<"\n";
+			}
+			else {
+				cout << "vectro is long enough" << "\n";
+			}
+		}
+		
+		for (int i = 0; i < All.size(); i++) {
+			if (All[i].size() < (LengthOfTrainingPeriod + 30)) {
+				All.erase(All.begin() + i);
+				cout << All[i].size() << " this is too small" << i << "\n";
 			}
 			else {
 				cout << "vectro is long enough" << "\n";
@@ -212,7 +228,7 @@ int main() {
 				
 				random_device dev;
 				mt19937 rng(dev());
-				uniform_int_distribution<mt19937::result_type> dist6(30, All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1));	 // distribution range of 
+				uniform_int_distribution<mt19937::result_type> dist6(31, All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1));	 // distribution range of 
 				int RandomStartingPoint = dist6(rng);
 				cout << "randomstarting point: " << RandomStartingPoint << endl;
 
@@ -231,8 +247,12 @@ int main() {
 						//long double VolumeZScore;
 				};
 				vector<MovingZScores> OpenMovingZscores;
-				vector<MovingZScores> Day10MovingZscores;
-				vector<MovingZScores> Day30MovingZscores;
+				vector<MovingZScores> CloseMovingZscores;
+				vector<MovingZScores> HighMovingZscores;
+				vector<MovingZScores> LowMovingZscores;
+				vector<MovingZScores> VolumeMovingZscores;
+
+				
 
 				cout << "am here" << "\n";
 
@@ -252,6 +272,7 @@ int main() {
 				cout << "here am i" << "\n";
 
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					//Sleep(100);
 					double S5um = 0;
 					double M5ean = 0;
 					double S10um = 0;
@@ -264,91 +285,296 @@ int main() {
 					double Sum = 0;
 					double sUm = 0;
 					double suM = 0;
+					double ZScore5 = 0;
+					double ZScore30 = 0;
+					double ZScore10 = 0;
 
-					//cout << "lol" << "\n";
+					//cout << i << " = i" << "\n";
 
-					if (RandomStartingPoint < 5) {
-						for (int i = 0; i < 5; i++)	{
-							S5um = S5um + All[RandomFilePicker][i].Open;
-							cout << "too small" << "\n";
-						}
-						for (int i = 0; i < 10; i++) {
-							S10um = S10um + All[RandomFilePicker][i].Open;
-							cout << "too small" << "\n";
-						}
-						for (int i = 0; i < 30; i++) {
-							S30um = S30um + All[RandomFilePicker][i].Open;
-							cout << "too small" << "\n";
-						}
+					//if (RandomStartingPoint < 5) {
+					for (int k = 0; k < 5; k++) {
+						S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].Close;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
 					}
-
-					else {
-						for (int i = 0; i < 5; i++) {
-							S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open;
-						}
-						for (int i = 0; i < 10; i++) {
-							S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open;
-						}
-						for (int i = 0; i < 30; i++) {
-							S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open;
-						}
+					for (int k = 0; k < 10; k++) {
+						S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].Close;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
 					}
-
-					
-					/*for (int i = 0; i < 5; i++) {
-						if (RandomStartingPoint < 5) {
-							S5um = S5um + All[RandomFilePicker][i].Open;
-							cout << "too small" << "\n";
-						}
-						else {
-							S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open;
-						}
-						//S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open;
-						cout << All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open << "\n";
+					for (int k = 0; k < 30; k++) {
+						S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].Close;
+						//cout << "too small" << "\n";
 					}
-					cout << "first sume done" << "\n";
-					for (int i = 0; i < 10; i++) {
-						if (RandomStartingPoint < 10) {
-							S10um = S10um + All[RandomFilePicker][i].Open;
-							cout << "too small" << "\n";
-						}
-						else {
-							S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open;
-						}
-						//S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open;
-						cout << All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open << "\n";
-					}
-					cout << "second sum is done" << "\n";
-					for (int i = 0; i < 30; i++) {
-						if (RandomStartingPoint < 30) {
-							S30um = S30um + All[RandomFilePicker][i].Open;
-							cout << "too small" << "\n";
-						}
-						else {
-							S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open;
-						}
-						
-						cout << All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open << "\n";
-					}*/
-
-					//cout << "the sum of is done" << "\n";
 
 					M5ean = S5um / 5;
 					M10ean = S10um / 10;
 					M30ean = S30um / 30;
 
-					for (int i = 0; i < 5; i++) {
-						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 5) + i].Open - M5ean, 2);
+					for (int ik = 0; ik < 5; ik++) {
+						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 6) + ik + i].Close - M5ean, 2);
 					}
-					for (int i = 0; i < 10; i++) {
-						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 10) + i].Open - M10ean, 2);
+					for (int ik = 0; ik < 10; ik++) {
+						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 11) + ik + i].Close - M10ean, 2);
 					}
-					for (int i = 0; i < 30; i++) {
-						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 30) + i].Open - M30ean, 2);
+					for (int ik = 0; ik < 30; ik++) {
+						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 31) + ik + i].Close - M30ean, 2);
 					}
 
-					OpenMovingZscores.push_back({ sqrt(Sum / 4), sqrt(sUm / 9), sqrt(suM / 29) });
+					St5deviation = sqrt(Sum / 4);
+					St10deviation = sqrt(sUm / 9);
+					St30deviation = sqrt(suM / 29);
+
+					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Close - M5ean) / St5deviation;
+					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Close - M10ean) / St10deviation;
+					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Close - M30ean) / St30deviation;
+
+					CloseMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
 				}
+
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					//Sleep(100);
+					double S5um = 0;
+					double M5ean = 0;
+					double S10um = 0;
+					double M10ean = 0;
+					double S30um = 0;
+					double M30ean = 0;
+					double St5deviation = 0;
+					double St10deviation = 0;
+					double St30deviation = 0;
+					double Sum = 0;
+					double sUm = 0;
+					double suM = 0;
+					double ZScore5 = 0;
+					double ZScore30 = 0;
+					double ZScore10 = 0;
+
+					//cout << i << " = i" << "\n";
+
+					//if (RandomStartingPoint < 5) {
+					for (int k = 0; k < 5; k++) {
+						S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].Open;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 10; k++) {
+						S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].Open;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 30; k++) {
+						S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].Open;
+						//cout << "too small" << "\n";
+					}
+
+					M5ean = S5um / 5;
+					M10ean = S10um / 10;
+					M30ean = S30um / 30;
+
+					for (int ik = 0; ik < 5; ik++) {
+						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 6) + ik + i].Open - M5ean, 2);
+					}
+					for (int ik = 0; ik < 10; ik++) {
+						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 11) + ik + i].Open - M10ean, 2);
+					}
+					for (int ik = 0; ik < 30; ik++) {
+						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 31) + ik + i].Open - M30ean, 2);
+					}
+
+					St5deviation = sqrt(Sum / 4);
+					St10deviation = sqrt(sUm / 9);
+					St30deviation = sqrt(suM / 29);
+
+					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Open - M5ean) / St5deviation;
+					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Open - M10ean) / St10deviation;
+					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Open - M30ean) / St30deviation;
+
+					OpenMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
+				}
+
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					//Sleep(100);
+					double S5um = 0;
+					double M5ean = 0;
+					double S10um = 0;
+					double M10ean = 0;
+					double S30um = 0;
+					double M30ean = 0;
+					double St5deviation = 0;
+					double St10deviation = 0;
+					double St30deviation = 0;
+					double Sum = 0;
+					double sUm = 0;
+					double suM = 0;
+					double ZScore5 = 0;
+					double ZScore30 = 0;
+					double ZScore10 = 0;
+
+					//cout << i << " = i" << "\n";
+
+					//if (RandomStartingPoint < 5) {
+					for (int k = 0; k < 5; k++) {
+						S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].High;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 10; k++) {
+						S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].High;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 30; k++) {
+						S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].High;
+						//cout << "too small" << "\n";
+					}
+
+					M5ean = S5um / 5;
+					M10ean = S10um / 10;
+					M30ean = S30um / 30;
+
+					for (int ik = 0; ik < 5; ik++) {
+						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 6) + ik + i].High - M5ean, 2);
+					}
+					for (int ik = 0; ik < 10; ik++) {
+						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 11) + ik + i].High - M10ean, 2);
+					}
+					for (int ik = 0; ik < 30; ik++) {
+						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 31) + ik + i].High - M30ean, 2);
+					}
+
+					St5deviation = sqrt(Sum / 4);
+					St10deviation = sqrt(sUm / 9);
+					St30deviation = sqrt(suM / 29);
+
+					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].High - M5ean) / St5deviation;
+					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].High - M10ean) / St10deviation;
+					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].High - M30ean) / St30deviation;
+
+					HighMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
+				}
+
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					//Sleep(100);
+					double S5um = 0;
+					double M5ean = 0;
+					double S10um = 0;
+					double M10ean = 0;
+					double S30um = 0;
+					double M30ean = 0;
+					double St5deviation = 0;
+					double St10deviation = 0;
+					double St30deviation = 0;
+					double Sum = 0;
+					double sUm = 0;
+					double suM = 0;
+					double ZScore5 = 0;
+					double ZScore30 = 0;
+					double ZScore10 = 0;
+
+					//cout << i << " = i" << "\n";
+
+					//if (RandomStartingPoint < 5) {
+					for (int k = 0; k < 5; k++)	{
+						S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].Low;
+							//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 10; k++) {
+						S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].Low;
+							//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 30; k++) {
+						S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].Low;
+							//cout << "too small" << "\n";
+					}
+					
+					M5ean = S5um / 5;
+					M10ean = S10um / 10;
+					M30ean = S30um / 30;
+
+					for (int ik = 0; ik < 5; ik++) {
+						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 6) + ik + i].Low - M5ean, 2);
+					}
+					for (int ik = 0; ik < 10; ik++) {
+						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 11) + ik + i].Low - M10ean, 2);
+					}
+					for (int ik = 0; ik < 30; ik++) {
+						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 31) + ik + i].Low - M30ean, 2);
+					}
+
+					St5deviation = sqrt(Sum / 4);
+					St10deviation = sqrt(sUm / 9);
+					St30deviation = sqrt(suM / 29);
+
+					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Low - M5ean) / St5deviation;
+					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Low - M10ean) / St10deviation;
+					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Low - M30ean) / St30deviation;
+
+					LowMovingZscores.push_back({ ZScore5, ZScore10, ZScore30});
+				}
+
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					//Sleep(100);
+					double S5um = 0;
+					double M5ean = 0;
+					double S10um = 0;
+					double M10ean = 0;
+					double S30um = 0;
+					double M30ean = 0;
+					double St5deviation = 0;
+					double St10deviation = 0;
+					double St30deviation = 0;
+					double Sum = 0;
+					double sUm = 0;
+					double suM = 0;
+					double ZScore5 = 0;
+					double ZScore30 = 0;
+					double ZScore10 = 0;
+
+					//cout << i << " = i" << "\n";
+
+					//if (RandomStartingPoint < 5) {
+					for (int k = 0; k < 5; k++) {
+						S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].Volume;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 10; k++) {
+						S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].Volume;
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 30; k++) {
+						S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].Volume;
+						//cout << "too small" << "\n";
+					}
+
+					M5ean = S5um / 5;
+					M10ean = S10um / 10;
+					M30ean = S30um / 30;
+
+					for (int ik = 0; ik < 5; ik++) {
+						Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 6) + ik + i].Volume - M5ean, 2);
+					}
+					for (int ik = 0; ik < 10; ik++) {
+						sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 11) + ik + i].Volume - M10ean, 2);
+					}
+					for (int ik = 0; ik < 30; ik++) {
+						suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 31) + ik + i].Volume - M30ean, 2);
+					}
+
+					St5deviation = sqrt(Sum / 4);
+					St10deviation = sqrt(sUm / 9);
+					St30deviation = sqrt(suM / 29);
+
+					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Volume - M5ean) / St5deviation;
+					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Volume - M10ean) / St10deviation;
+					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Volume - M30ean) / St30deviation;
+
+					VolumeMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
+				}
+
+				/*for (int y = 0; y < OpenMovingZscores.size(); y++) {
+					cout << OpenMovingZscores[y].ZScore5 << " 5day; " << OpenMovingZscores[y].ZScore10 << " 10day; " << OpenMovingZscores[y].ZScore30 << " 30day" << "\n";
+					cout << VolumeMovingZscores[y].ZScore5 << " 5day; " << VolumeMovingZscores[y].ZScore10 << " 10day; " << VolumeMovingZscores[y].ZScore30 << " 30day" << "\n";
+					cout << LowMovingZscores[y].ZScore5 << " 5day; " << LowMovingZscores[y].ZScore10 << " 10day; " << LowMovingZscores[y].ZScore30 << " 30day" << "\n";
+					cout << HighMovingZscores[y].ZScore5 << " 5day; " << HighMovingZscores[y].ZScore10 << " 10day; " << HighMovingZscores[y].ZScore30 << " 30day" << "\n";
+					cout << CloseMovingZscores[y].ZScore5 << " 5day; " << CloseMovingZscores[y].ZScore10 << " 10day; " << CloseMovingZscores[y].ZScore30 << " 30day" << "\n";
+				}*/
+
+				
 
 
 				cout << InputNodeClose.size() << "\n";
@@ -384,20 +610,6 @@ int main() {
 					b = 1 / (1 + pow(e, -b));
 					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
 				}
-
-
-
-
-				float ZLongScore; int n = LengthOfTrainingPeriod;																		// Z score calculations
-				float XLine = 0;
-				//cout << "lool";
-				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
-					//cout << All[0][0 + i].Open << endl;
-					XLine = XLine + All[0][0 + i].Open;
-				}
-				//cout << "XLine" << XLine << endl;
-				//cout << All[0][random].Open;
-				//cout << dist6(rng) << endl;
 			}
 		}
 	}
