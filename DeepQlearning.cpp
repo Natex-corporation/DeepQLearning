@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <iomanip>
 #include <ctime>
+#include "Structs.h"
 
 
 
@@ -85,7 +86,7 @@ istream& operator>>(istream& str, CSVRow& data)
 int main() {
 	int SampleSize = 1000;													//Add here the number of tries for choosing the company 
 	int LengthOfTrainingPeriod = 365;									//How many days are wee leting the model train
-	int NumberOfRepetitions = 5;										//How many times to look at the specified time period
+	int NumberOfRepetitions = 100;										//How many times to look at the specified time period
 	
 
 	int PercentageGain = 100;											//How many percent gained in the time frame
@@ -225,7 +226,7 @@ int main() {
 				cout << "Max Length: " << MaxLength << "\n" << "OffsetFromEnd: " << OffsetFromEnd << "\n" << "Result: " << Result << "\n";
 				cout << All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1) << "before random" << "\n";
 				cout << All[RandomFilePicker].size() << "size at index random file" << "\n";
-				
+
 				random_device dev;
 				mt19937 rng(dev());
 				uniform_int_distribution<mt19937::result_type> dist6(31, All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1));	 // distribution range of 
@@ -238,24 +239,34 @@ int main() {
 				vector <float> InputNodeHigh;
 				vector <float> InputNodeLow;
 				vector <int> InputNodeVolume;
+				vector <double> InputNodeAverage;
 				vector <long double> ZScore;
-				struct MovingZScores {
-						long double ZScore5;
-						long double ZScore10;
-						long double ZScore30;
-						//long double CloseZScore;
-						//long double VolumeZScore;
-				};
+				/*struct MovingZScores {
+					long double ZScore5;
+					long double ZScore10;
+					long double ZScore30;
+					//long double CloseZScore;
+					//long double VolumeZScore;
+				};*/
 				vector<MovingZScores> OpenMovingZscores;
 				vector<MovingZScores> CloseMovingZscores;
 				vector<MovingZScores> HighMovingZscores;
 				vector<MovingZScores> LowMovingZscores;
 				vector<MovingZScores> VolumeMovingZscores;
+				vector<MovingZScores> AverageMovingZscores;
+				vector<MovingAvarage> OpenMovingAvevrage;
+				vector<MovingAvarage> CloseMovingAvevrage;
+				vector<MovingAvarage> HighMovingAvevrage;
+				vector<MovingAvarage> LowMovingAvevrage;
+				vector<MovingAvarage> VolumeMovingAvevrage;
+				vector<MovingAvarage> AverageMovingAvevrage;
+				vector<RSI> RelativeStrengthIndex;
+				vector<RSI> RelativeStrength;
 
-				
 
-				cout << "am here" << "\n";
 
+				cout << "am here1" << "\n";
+																																			//Normal values preparation 6nodes
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
 					InputNodeOpen.push_back(All[RandomFilePicker][RandomStartingPoint + i].Open);
 					//cout << "Open: " << All[RandomFilePicker][RandomStartingPoint + i].Open << "\n";
@@ -265,12 +276,14 @@ int main() {
 					//cout << "High: " << All[RandomFilePicker][RandomStartingPoint + i].High << "\n";
 					InputNodeLow.push_back(All[RandomFilePicker][RandomStartingPoint + i].Low);
 					//cout << "Low: " << All[RandomFilePicker][RandomStartingPoint + i].Low << "\n";
+					InputNodeAverage.push_back((All[RandomFilePicker][RandomStartingPoint + i].Close + All[RandomFilePicker][RandomStartingPoint + i].High + All[RandomFilePicker][RandomStartingPoint + i].Low + All[RandomFilePicker][RandomStartingPoint + i].Open) / 4);
+					//cout << "Average: " << (All[RandomFilePicker][RandomStartingPoint + i].Close + All[RandomFilePicker][RandomStartingPoint + i].High + All[RandomFilePicker][RandomStartingPoint + i].Low + All[RandomFilePicker][RandomStartingPoint + i].Open) / 4 << "\n";
 					InputNodeVolume.push_back(All[RandomFilePicker][RandomStartingPoint + i].Volume);
 					//cout << "One cycle done" << i << "\n";
 				}
 
-				cout << "here am i" << "\n";
-
+				cout << "am here2" << "\n";
+																																			//Zscores generation 6nodes
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
 					//Sleep(100);
 					double S5um = 0;
@@ -469,19 +482,19 @@ int main() {
 					//cout << i << " = i" << "\n";
 
 					//if (RandomStartingPoint < 5) {
-					for (int k = 0; k < 5; k++)	{
+					for (int k = 0; k < 5; k++) {
 						S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].Low;
-							//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
 					}
 					for (int k = 0; k < 10; k++) {
 						S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].Low;
-							//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
 					}
 					for (int k = 0; k < 30; k++) {
 						S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].Low;
-							//cout << "too small" << "\n";
+						//cout << "too small" << "\n";
 					}
-					
+
 					M5ean = S5um / 5;
 					M10ean = S10um / 10;
 					M30ean = S30um / 30;
@@ -504,7 +517,7 @@ int main() {
 					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Low - M10ean) / St10deviation;
 					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Low - M30ean) / St30deviation;
 
-					LowMovingZscores.push_back({ ZScore5, ZScore10, ZScore30});
+					LowMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
 				}
 
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
@@ -566,6 +579,66 @@ int main() {
 					VolumeMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
 				}
 
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					//Sleep(100);
+					double S5um = 0;
+					double M5ean = 0;
+					double S10um = 0;
+					double M10ean = 0;
+					double S30um = 0;
+					double M30ean = 0;
+					double St5deviation = 0;
+					double St10deviation = 0;
+					double St30deviation = 0;
+					double Sum = 0;
+					double sUm = 0;
+					double suM = 0;
+					double ZScore5 = 0;
+					double ZScore30 = 0;
+					double ZScore10 = 0;
+
+					//cout << i << " = i" << "\n";
+
+					//if (RandomStartingPoint < 5) {
+					for (int k = 0; k < 5; k++) {
+						S5um = S5um + ((All[RandomFilePicker][(RandomStartingPoint - 6) + i + k].Close + All[RandomFilePicker][(RandomStartingPoint - 6) + i + k].High + All[RandomFilePicker][(RandomStartingPoint - 6) + i + k].Low + All[RandomFilePicker][(RandomStartingPoint - 6) + i + k].Open) / 4);
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 10; k++) {
+						S10um = S10um + ((All[RandomFilePicker][(RandomStartingPoint - 11) + i + k].Close + All[RandomFilePicker][(RandomStartingPoint - 11) + i + k].High + All[RandomFilePicker][(RandomStartingPoint - 11) + i + k].Low + All[RandomFilePicker][(RandomStartingPoint - 11) + i + k].Open) / 4);
+						//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+					}
+					for (int k = 0; k < 30; k++) {
+						S30um = S30um + ((All[RandomFilePicker][(RandomStartingPoint - 31) + i + k].Close + All[RandomFilePicker][(RandomStartingPoint - 31) + i + k].High + All[RandomFilePicker][(RandomStartingPoint - 31) + i + k].Low + All[RandomFilePicker][(RandomStartingPoint - 31) + i + k].Open) / 4);
+						//cout << "too small" << "\n";
+					}
+
+					M5ean = S5um / 5;
+					M10ean = S10um / 10;
+					M30ean = S30um / 30;
+
+					for (int ik = 0; ik < 5; ik++) {
+						Sum = Sum + pow(((All[RandomFilePicker][(RandomStartingPoint - 6) + i + ik].Close + All[RandomFilePicker][(RandomStartingPoint - 6) + i + ik].High + All[RandomFilePicker][(RandomStartingPoint - 6) + i + ik].Low + All[RandomFilePicker][(RandomStartingPoint - 6) + i + ik].Open) / 4) - M5ean, 2);
+					}
+					for (int ik = 0; ik < 10; ik++) {
+						sUm = sUm + pow(((All[RandomFilePicker][(RandomStartingPoint - 11) + i + ik].Close + All[RandomFilePicker][(RandomStartingPoint - 11) + i + ik].High + All[RandomFilePicker][(RandomStartingPoint - 11) + i + ik].Low + All[RandomFilePicker][(RandomStartingPoint - 11) + i + ik].Open) / 4) - M10ean, 2);
+					}
+					for (int ik = 0; ik < 30; ik++) {
+						suM = suM + pow(((All[RandomFilePicker][(RandomStartingPoint - 31) + i + ik].Close + All[RandomFilePicker][(RandomStartingPoint - 31) + i + ik].High + All[RandomFilePicker][(RandomStartingPoint - 31) + i + ik].Low + All[RandomFilePicker][(RandomStartingPoint - 31) + i + ik].Open) / 4) - M30ean, 2);
+					}
+
+					St5deviation = sqrt(Sum / 4);
+					St10deviation = sqrt(sUm / 9);
+					St30deviation = sqrt(suM / 29);
+
+					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Volume - M5ean) / St5deviation;
+					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Volume - M10ean) / St10deviation;
+					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Volume - M30ean) / St30deviation;
+
+					AverageMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
+				}
+			
+
 				/*for (int y = 0; y < OpenMovingZscores.size(); y++) {
 					cout << OpenMovingZscores[y].ZScore5 << " 5day; " << OpenMovingZscores[y].ZScore10 << " 10day; " << OpenMovingZscores[y].ZScore30 << " 30day" << "\n";
 					cout << VolumeMovingZscores[y].ZScore5 << " 5day; " << VolumeMovingZscores[y].ZScore10 << " 10day; " << VolumeMovingZscores[y].ZScore30 << " 30day" << "\n";
@@ -573,13 +646,186 @@ int main() {
 					cout << HighMovingZscores[y].ZScore5 << " 5day; " << HighMovingZscores[y].ZScore10 << " 10day; " << HighMovingZscores[y].ZScore30 << " 30day" << "\n";
 					cout << CloseMovingZscores[y].ZScore5 << " 5day; " << CloseMovingZscores[y].ZScore10 << " 10day; " << CloseMovingZscores[y].ZScore30 << " 30day" << "\n";
 				}*/
+				cout << "am here3" << "\n";
+																																			//Dayli moving avarage 6nodes
+				for (int day = 0; day < LengthOfTrainingPeriod ;day++) {
+					double Sum5D = 0;
+					double Sum10D = 0;
+					double Sum30D = 0;
 
-				
+					for (int i = 0; i < 5; i++) {
+						Sum5D = Sum5D + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Open;
+					}
+					for (int i = 0; i < 10; i++) {
+						Sum10D = Sum10D + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Open;
+					}
+					for (int i = 0; i < 30; i++) {
+						Sum30D = Sum30D + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Open;
+					}
+					OpenMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
+				}
 
+				for (int day = 0; day < LengthOfTrainingPeriod; day++) {
+					double Sum5D = 0;
+					double Sum10D = 0;
+					double Sum30D = 0;
 
-				cout << InputNodeClose.size() << "\n";
+					for (int i = 0; i < 5; i++) {
+						Sum5D = Sum5D + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].High;
+					}
+					for (int i = 0; i < 10; i++) {
+						Sum10D = Sum10D + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].High;
+					}
+					for (int i = 0; i < 30; i++) {
+						Sum30D = Sum30D + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].High;
+					}
+					HighMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
+				}
 
-				
+				for (int day = 0; day < LengthOfTrainingPeriod; day++) {
+					double Sum5D = 0;
+					double Sum10D = 0;
+					double Sum30D = 0;
+
+					for (int i = 0; i < 5; i++) {
+						Sum5D = Sum5D + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Low;
+					}
+					for (int i = 0; i < 10; i++) {
+						Sum10D = Sum10D + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Low;
+					}
+					for (int i = 0; i < 30; i++) {
+						Sum30D = Sum30D + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Low;
+					}
+					LowMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
+				}
+
+				for (int day = 0; day < LengthOfTrainingPeriod; day++) {
+					double Sum5D = 0;
+					double Sum10D = 0;
+					double Sum30D = 0;
+
+					for (int i = 0; i < 5; i++) {
+						Sum5D = Sum5D + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Volume;
+					}
+					for (int i = 0; i < 10; i++) {
+						Sum10D = Sum10D + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Volume;
+					}
+					for (int i = 0; i < 30; i++) {
+						Sum30D = Sum30D + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Volume;
+					}
+					VolumeMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
+				}
+
+				for (int day = 0; day < LengthOfTrainingPeriod; day++) {
+					double Sum5D = 0;
+					double Sum10D = 0;
+					double Sum30D = 0;
+
+					for (int i = 0; i < 5; i++) {
+						Sum5D = Sum5D + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Close;
+					}
+					for (int i = 0; i < 10; i++) {
+						Sum10D = Sum10D + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Close;
+					}
+					for (int i = 0; i < 30; i++) {
+						Sum30D = Sum30D + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Close;
+					}
+					CloseMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
+				}
+
+				for (int day = 0; day < LengthOfTrainingPeriod; day++) {
+					double Sum5D = 0;
+					double Sum10D = 0;
+					double Sum30D = 0;
+
+					for (int i = 0; i < 5; i++) {
+						Sum5D = Sum5D + ((All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Close + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].High + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Low + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Open) / 4);
+					}
+					for (int i = 0; i < 10; i++) {
+						Sum10D = Sum10D + ((All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Close + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].High + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Low + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Open) / 4);
+					}
+					for (int i = 0; i < 30; i++) {
+						Sum30D = Sum30D + ((All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Close + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].High + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Low + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Open) / 4);
+					}
+					AverageMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
+				}
+
+				cout << "am here4" << "\n";
+																																			//RSI (relative strength index) 1 node, RS (relative strengrh) node;
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					vector <long double> AverageValue;
+					long double PositiveGrowth = 0;
+					long double NegativeGrowth = 0;
+					long double Relative5Strength = 0;
+					long double Relative5StrengthIndex = 0;
+					long double Relative10Strength = 0;
+					long double Relative10StrengthIndex = 0;
+					long double Relative30Strength = 0;
+					long double Relative30StrengthIndex = 0;
+
+					for (int day = 0; day < 5; day++) {
+						AverageValue.push_back((All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Open + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Close + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].High + All[RandomFilePicker][(RandomStartingPoint - 6) + i + day].Low) / 4);
+					}
+					for (int ik = 1; ik < 5; ik++) {
+						long double PositiveNegative = AverageValue[ik - 1] - AverageValue[ik];
+						if (PositiveNegative > 0) {
+							//cout << PositiveNegative << "positive" << "\n";
+							PositiveGrowth = PositiveGrowth + PositiveNegative;
+						}
+						if (PositiveNegative < 0) {
+							//cout << PositiveNegative << "negative" << "\n";
+							NegativeGrowth = NegativeGrowth + PositiveNegative;
+						}
+					}
+					Relative5Strength = ((PositiveGrowth / 4) / (NegativeGrowth / 4));
+					Relative5StrengthIndex = 100 - (100 / (1 + Relative5Strength));
+
+					AverageValue.clear();
+
+					for (int day = 0; day < 10; day++) {
+						AverageValue.push_back((All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Open + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Close + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].High + All[RandomFilePicker][(RandomStartingPoint - 11) + i + day].Low) / 4);
+					}
+					for (int ik = 1; ik < 10; ik++) {
+						long double PositiveNegative = AverageValue[ik - 1] - AverageValue[ik];
+						if (PositiveNegative > 0) {
+							//cout << PositiveNegative << "positive" << "\n";
+							PositiveGrowth = PositiveGrowth + PositiveNegative;
+						}
+						if (PositiveNegative < 0) {
+							//cout << PositiveNegative << "negative" << "\n";
+							NegativeGrowth = NegativeGrowth + PositiveNegative;
+						}
+					}
+					Relative10Strength = ((PositiveGrowth / 9) / (NegativeGrowth / 9));
+					Relative10StrengthIndex = 100 - (100 / (1 + Relative5Strength));
+					
+					AverageValue.clear();
+
+					for (int day = 0; day < 30; day++) {
+						AverageValue.push_back((All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Open + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Close + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].High + All[RandomFilePicker][(RandomStartingPoint - 31) + i + day].Low) / 4);
+					}
+					for (int ik = 1; ik < 30; ik++) {
+						long double PositiveNegative = AverageValue[ik - 1] - AverageValue[ik];
+						if (PositiveNegative > 0) {
+							//cout << PositiveNegative << "positive" << "\n";
+							PositiveGrowth = PositiveGrowth + PositiveNegative;
+						}
+						if (PositiveNegative < 0) {
+							//cout << PositiveNegative << "negative" << "\n";
+							NegativeGrowth = NegativeGrowth + PositiveNegative;
+						}
+					}
+					Relative10Strength = ((PositiveGrowth / 29) / (NegativeGrowth / 29));
+					Relative10StrengthIndex = 100 - (100 / (1 + Relative5Strength));
+					
+					AverageValue.clear();
+
+					RelativeStrength.push_back({ Relative5Strength, Relative10Strength, Relative30Strength });
+					RelativeStrengthIndex.push_back({ Relative5StrengthIndex, Relative10StrengthIndex, Relative30StrengthIndex });
+				}
+
+				cout << "am here5" << "\n";
+																																			//random weight generation
 				srand((unsigned int)time(NULL));
 				float a = 5.0;
 				for (size_t i = 0; i < (InputNodeClose.size() * 4); i++) {
@@ -636,5 +882,68 @@ void shrink(vector<float>Vector) {
 void CostFunction() {
 
 }
+
+vector<MovingZScores> Zmoving(int LengthOfTrainingPeriod, int RandomFilePicker, int RandomStartingPoint, vector <MovingZScores> Zscores) {
+	for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+		//Sleep(100);
+		double S5um = 0;
+		double M5ean = 0;
+		double S10um = 0;
+		double M10ean = 0;
+		double S30um = 0;
+		double M30ean = 0;
+		double St5deviation = 0;
+		double St10deviation = 0;
+		double St30deviation = 0;
+		double Sum = 0;
+		double sUm = 0;
+		double suM = 0;
+		double ZScore5 = 0;
+		double ZScore30 = 0;
+		double ZScore10 = 0;
+
+		//cout << i << " = i" << "\n";
+
+		//if (RandomStartingPoint < 5) {
+		for (int k = 0; k < 5; k++) {
+			S5um = S5um + All[RandomFilePicker][(RandomStartingPoint - 6) + k + i].Open;
+			//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+		}
+		for (int k = 0; k < 10; k++) {
+			S10um = S10um + All[RandomFilePicker][(RandomStartingPoint - 11) + k + i].Open;
+			//cout << All[RandomFilePicker][i].Open << "too small" << "\n";
+		}
+		for (int k = 0; k < 30; k++) {
+			S30um = S30um + All[RandomFilePicker][(RandomStartingPoint - 31) + k + i].Open;
+			//cout << "too small" << "\n";
+		}
+
+		M5ean = S5um / 5;
+		M10ean = S10um / 10;
+		M30ean = S30um / 30;
+
+		for (int ik = 0; ik < 5; ik++) {
+			Sum = Sum + pow(All[RandomFilePicker][(RandomStartingPoint - 6) + ik + i].Open - M5ean, 2);
+		}
+		for (int ik = 0; ik < 10; ik++) {
+			sUm = sUm + pow(All[RandomFilePicker][(RandomStartingPoint - 11) + ik + i].Open - M10ean, 2);
+		}
+		for (int ik = 0; ik < 30; ik++) {
+			suM = suM + pow(All[RandomFilePicker][(RandomStartingPoint - 31) + ik + i].Open - M30ean, 2);
+		}
+
+		St5deviation = sqrt(Sum / 4);
+		St10deviation = sqrt(sUm / 9);
+		St30deviation = sqrt(suM / 29);
+
+		ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Open - M5ean) / St5deviation;
+		ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Open - M10ean) / St10deviation;
+		ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Open - M30ean) / St30deviation;
+
+		Zscores.push_back({ ZScore5, ZScore10, ZScore30 });
+		return Zscores;
+	}
+}
+
 	
 
