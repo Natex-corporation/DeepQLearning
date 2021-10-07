@@ -41,8 +41,6 @@ vector<vector<SeparateDays>> All;
 
 
 
-
-
 class CSVRow {
 
 public:
@@ -84,11 +82,17 @@ istream& operator>>(istream& str, CSVRow& data)
 
 
 int main() {
-	int SampleSize = 1000;													//Add here the number of tries for choosing the company 
+	//////////training length///////////////
+	int SampleSize = 1000;													//Add here the number of tries for choosing the company/How many companies will be learned on
 	int LengthOfTrainingPeriod = 365;									//How many days are wee leting the model train
-	int NumberOfRepetitions = 100;										//How many times to look at the specified time period
+	int NumberOfRepetitions = 20;										//How many times to look at the specified time period	
 	
+	//////////network parameters////////////
+	int NumberOfHiddenLayers = 30;
+	double UpAndDownScaling = 2;
+	long double LearningRate = 0;
 
+	//////////result evaluation/////////////
 	int PercentageGain = 100;											//How many percent gained in the time frame
 	int StartingCapital = 100000;										//with how much money does the model start
 	vector <string> FilePaths;
@@ -207,14 +211,12 @@ int main() {
 		}
 
 
-
-
 		for (int i = 1; i <= SampleSize; i++) {																							// Random file picker
 			random_device dev;
 			mt19937 rng(dev());
 			uniform_int_distribution<mt19937::result_type> dist6(0, All.size() - 1);													 // distribution range of 0 - number of imported companies 
 			int RandomFilePicker = dist6(rng);
-			cout << "RandomFilePicker: " << RandomFilePicker << endl;
+			cout << "RandomFilePicker: " << RandomFilePicker << " " << i <<"\n";
 
 			for (int i = 1; i <= NumberOfRepetitions; i++) {																			// Random Range picker
 				int Result = 0;
@@ -223,15 +225,15 @@ int main() {
 				MaxLength = All[RandomFilePicker].size();
 				OffsetFromEnd = LengthOfTrainingPeriod + 1;
 				Result = MaxLength - OffsetFromEnd;
-				cout << "Max Length: " << MaxLength << "\n" << "OffsetFromEnd: " << OffsetFromEnd << "\n" << "Result: " << Result << "\n";
-				cout << All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1) << "before random" << "\n";
-				cout << All[RandomFilePicker].size() << "size at index random file" << "\n";
+				//cout << "Max Length: " << MaxLength << "\n" << "OffsetFromEnd: " << OffsetFromEnd << "\n" << "Result: " << Result << "\n";
+				//cout << All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1) << "before random" << "\n";
+				//cout << All[RandomFilePicker].size() << "size at index random file" << "\n";
 
 				random_device dev;
 				mt19937 rng(dev());
 				uniform_int_distribution<mt19937::result_type> dist6(31, All[RandomFilePicker].size() - (LengthOfTrainingPeriod + 1));	 // distribution range of 
 				int RandomStartingPoint = dist6(rng);
-				cout << "randomstarting point: " << RandomStartingPoint << endl;
+				//cout << "randomstarting point: " << RandomStartingPoint << endl;
 
 				//Input Preparation
 				vector <float> InputNodeOpen;
@@ -263,9 +265,35 @@ int main() {
 				vector<RSI> RelativeStrengthIndex;
 				vector<RSI> RelativeStrength;
 
+				struct Inputs {
+					vector <float> InputNodeOpen;
+					vector <float> InputNodeClose;
+					vector <float> InputNodeHigh;
+					vector <float> InputNodeLow;
+					vector <int> InputNodeVolume;
+					vector <double> InputNodeAverage;
+					vector <long double> ZScore;
+					vector<MovingZScores> OpenMovingZscores;
+					vector<MovingZScores> CloseMovingZscores;
+					vector<MovingZScores> HighMovingZscores;
+					vector<MovingZScores> LowMovingZscores;
+					vector<MovingZScores> VolumeMovingZscores;
+					vector<MovingZScores> AverageMovingZscores;
+					vector<MovingAvarage> OpenMovingAvevrage;
+					vector<MovingAvarage> CloseMovingAvevrage;
+					vector<MovingAvarage> HighMovingAvevrage;
+					vector<MovingAvarage> LowMovingAvevrage;
+					vector<MovingAvarage> VolumeMovingAvevrage;
+					vector<MovingAvarage> AverageMovingAvevrage;
+					vector<RSI> RelativeStrengthIndex;
+					vector<RSI> RelativeStrength;
+				};
 
 
-				cout << "am here1" << "\n";
+
+
+
+				//cout << "am here1" << "\n";
 																																			//Normal values preparation 6nodes
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
 					InputNodeOpen.push_back(All[RandomFilePicker][RandomStartingPoint + i].Open);
@@ -282,7 +310,7 @@ int main() {
 					//cout << "One cycle done" << i << "\n";
 				}
 
-				cout << "am here2" << "\n";
+				//cout << "am here2" << "\n";
 																																			//Zscores generation 6nodes
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
 					//Sleep(100);
@@ -638,15 +666,7 @@ int main() {
 					AverageMovingZscores.push_back({ ZScore5, ZScore10, ZScore30 });
 				}
 			
-
-				/*for (int y = 0; y < OpenMovingZscores.size(); y++) {
-					cout << OpenMovingZscores[y].ZScore5 << " 5day; " << OpenMovingZscores[y].ZScore10 << " 10day; " << OpenMovingZscores[y].ZScore30 << " 30day" << "\n";
-					cout << VolumeMovingZscores[y].ZScore5 << " 5day; " << VolumeMovingZscores[y].ZScore10 << " 10day; " << VolumeMovingZscores[y].ZScore30 << " 30day" << "\n";
-					cout << LowMovingZscores[y].ZScore5 << " 5day; " << LowMovingZscores[y].ZScore10 << " 10day; " << LowMovingZscores[y].ZScore30 << " 30day" << "\n";
-					cout << HighMovingZscores[y].ZScore5 << " 5day; " << HighMovingZscores[y].ZScore10 << " 10day; " << HighMovingZscores[y].ZScore30 << " 30day" << "\n";
-					cout << CloseMovingZscores[y].ZScore5 << " 5day; " << CloseMovingZscores[y].ZScore10 << " 10day; " << CloseMovingZscores[y].ZScore30 << " 30day" << "\n";
-				}*/
-				cout << "am here3" << "\n";
+				//cout << "am here3" << "\n";
 																																			//Dayli moving avarage 6nodes
 				for (int day = 0; day < LengthOfTrainingPeriod ;day++) {
 					double Sum5D = 0;
@@ -750,7 +770,7 @@ int main() {
 					AverageMovingAvevrage.push_back({ Sum5D / 5, Sum10D / 10, Sum30D / 30 });
 				}
 
-				cout << "am here4" << "\n";
+				//cout << "am here4" << "\n";
 																																			//RSI (relative strength index) 1 node, RS (relative strengrh) node;
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
 					vector <long double> AverageValue;
@@ -824,9 +844,9 @@ int main() {
 					RelativeStrengthIndex.push_back({ Relative5StrengthIndex, Relative10StrengthIndex, Relative30StrengthIndex });
 				}
 
-				cout << "am here5" << "\n";
+				//cout << "am here5" << "\n";
 																																			//random weight generation
-				srand((unsigned int)time(NULL));
+				/*srand((unsigned int)time(NULL));
 				float a = 5.0;
 				for (size_t i = 0; i < (InputNodeClose.size() * 4); i++) {
 					float OL;
@@ -855,7 +875,7 @@ int main() {
 					a = 1 / (1 + pow(e, -a));			//must use Relu instead
 					b = 1 / (1 + pow(e, -b));
 					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
-				}
+				}*/
 			}
 		}
 	}
