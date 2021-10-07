@@ -21,7 +21,7 @@ using namespace std;
 void shrink(vector<float>Vector);
 //vector<MovingZScores> Zmoving(int LengthOfTrainingPeriod, int RandomFilePicker, int RandomStartingPoint, vector < MovingZScores>& Zscores);
 
-struct SeparateDays{
+/*struct SeparateDays {
 	//string Date;
 	float Open;
 	float High;
@@ -29,12 +29,13 @@ struct SeparateDays{
 	float Close;
 	int Volume;
 	//string Name;
-};
+};*/
 vector <float> Open;
 vector <float> High;
 vector <float> Low;
 vector <float> Close;
 vector <int> Volume;
+vector <vector <long double>> Wights;
 
 vector<SeparateDays> comp;
 vector<vector<SeparateDays>> All;
@@ -236,20 +237,15 @@ int main() {
 				//cout << "randomstarting point: " << RandomStartingPoint << endl;
 
 				//Input Preparation
+				vector <InputValues> Input;
+
 				vector <float> InputNodeOpen;
 				vector <float> InputNodeClose;
 				vector <float> InputNodeHigh;
 				vector <float> InputNodeLow;
 				vector <int> InputNodeVolume;
 				vector <double> InputNodeAverage;
-				vector <long double> ZScore;
-				/*struct MovingZScores {
-					long double ZScore5;
-					long double ZScore10;
-					long double ZScore30;
-					//long double CloseZScore;
-					//long double VolumeZScore;
-				};*/
+				//vector <long double> ZScore;
 				vector<MovingZScores> OpenMovingZscores;
 				vector<MovingZScores> CloseMovingZscores;
 				vector<MovingZScores> HighMovingZscores;
@@ -265,7 +261,7 @@ int main() {
 				vector<RSI> RelativeStrengthIndex;
 				vector<RSI> RelativeStrength;
 
-				struct Inputs {
+				/*struct Inputs {
 					vector <float> InputNodeOpen;
 					vector <float> InputNodeClose;
 					vector <float> InputNodeHigh;
@@ -287,7 +283,7 @@ int main() {
 					vector<MovingAvarage> AverageMovingAvevrage;
 					vector<RSI> RelativeStrengthIndex;
 					vector<RSI> RelativeStrength;
-				};
+				};*/
 
 
 
@@ -845,8 +841,19 @@ int main() {
 				}
 
 				//cout << "am here5" << "\n";
+				// 
+				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
+					Input.push_back({InputNodeOpen[i], InputNodeClose[i], InputNodeHigh[i], InputNodeLow[i], InputNodeVolume[i], InputNodeAverage[i], OpenMovingZscores[i].ZScore5, OpenMovingZscores[i].ZScore10, OpenMovingZscores[i].ZScore30, CloseMovingZscores[i].ZScore5,
+						CloseMovingZscores[i].ZScore10, CloseMovingZscores[i].ZScore30, HighMovingZscores[i].ZScore5, HighMovingZscores[i].ZScore10, HighMovingZscores[i].ZScore30, LowMovingZscores[i].ZScore5, LowMovingZscores[i].ZScore10, LowMovingZscores[i].ZScore30,
+						VolumeMovingZscores[i].ZScore5, VolumeMovingZscores[i].ZScore10, VolumeMovingZscores[i].ZScore30, AverageMovingZscores[i].ZScore5, AverageMovingZscores[i].ZScore10, AverageMovingZscores[i].ZScore30, OpenMovingAvevrage[i].A5verage,
+						OpenMovingAvevrage[i].A10verage, OpenMovingAvevrage[i].A30verage, CloseMovingAvevrage[i].A5verage, CloseMovingAvevrage[i].A10verage, CloseMovingAvevrage[i].A30verage, HighMovingAvevrage[i].A5verage, HighMovingAvevrage[i].A10verage,
+						HighMovingAvevrage[i].A30verage, LowMovingAvevrage[i].A5verage, LowMovingAvevrage[i].A10verage, LowMovingAvevrage[i].A30verage, VolumeMovingAvevrage[i].A5verage, VolumeMovingAvevrage[i].A10verage, VolumeMovingAvevrage[i].A30verage,
+						AverageMovingAvevrage[i].A5verage, AverageMovingAvevrage[i].A10verage, AverageMovingAvevrage[i].A30verage, RelativeStrengthIndex[i].R5SI, RelativeStrengthIndex[i].R10SI, RelativeStrengthIndex[i].R30SI, RelativeStrength[i].R5SI,
+						RelativeStrength[i].R10SI, RelativeStrength[i].R30SI
+					});
+				}
 																																			//random weight generation
-				/*srand((unsigned int)time(NULL));
+				srand((unsigned int)time(NULL));
 				float a = 5.0;
 				for (size_t i = 0; i < (InputNodeClose.size() * 4); i++) {
 					float OL;
@@ -854,9 +861,6 @@ int main() {
 					ZerothLayer.push_back(OL);
 				}
 
-				//shrink(InputNodeOpen);
-				//shrink(InputNodeClose);
-				
 
 				for (size_t i = 0; i < LengthOfTrainingPeriod; i++) {
 					long double a = 0;
@@ -875,7 +879,7 @@ int main() {
 					a = 1 / (1 + pow(e, -a));			//must use Relu instead
 					b = 1 / (1 + pow(e, -b));
 					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
-				}*/
+				}
 			}
 		}
 	}
