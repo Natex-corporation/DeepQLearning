@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <iomanip>
 #include <ctime>
+#include <cmath>
 #include "Structs.h"
 
 
@@ -21,15 +22,6 @@ using namespace std;
 void shrink(vector<float>Vector);
 //vector<MovingZScores> Zmoving(int LengthOfTrainingPeriod, int RandomFilePicker, int RandomStartingPoint, vector < MovingZScores>& Zscores);
 
-/*struct SeparateDays {
-	//string Date;
-	float Open;
-	float High;
-	float Low;
-	float Close;
-	int Volume;
-	//string Name;
-};*/
 vector <float> Open;
 vector <float> High;
 vector <float> Low;
@@ -82,6 +74,11 @@ istream& operator>>(istream& str, CSVRow& data)
 }
 
 
+
+
+vector <vector <float>> bias;
+
+
 int main() {
 	//////////training length///////////////
 	int SampleSize = 1000;													//Add here the number of tries for choosing the company/How many companies will be learned on
@@ -90,8 +87,12 @@ int main() {
 	
 	//////////network parameters////////////
 	int NumberOfHiddenLayers = 30;
+	int NumberOfinputs = 48;
+	int NumberOfOutputs = 3;
 	double UpAndDownScaling = 2;
 	long double LearningRate = 0;
+	int NumberOfWeights = 0;
+	vector <vector <float>> weights;
 
 	//////////result evaluation/////////////
 	int PercentageGain = 100;											//How many percent gained in the time frame
@@ -100,7 +101,7 @@ int main() {
 	string Path = "LearningData" /*"test"*/;							//Location of training data
 	string TrainingControler;
 
-	vector <float> ZerothLayer;											//substuitude for vector of all layers
+	//vector <float> ZerothLayer;											//substuitude for vector of all layers
 
 	const long double e = 2.71828182845904523536;
 	
@@ -109,6 +110,60 @@ int main() {
 	cin >> TrainingControler;
 
 	if (TrainingControler == "Y") {
+																														//designed for linear fully connected networks 
+		NumberOfWeights = ((NumberOfHiddenLayers - 1) * (NumberOfinputs * UpAndDownScaling * NumberOfinputs * UpAndDownScaling)) + (NumberOfinputs * NumberOfinputs * UpAndDownScaling) + (NumberOfinputs * UpAndDownScaling * NumberOfOutputs);
+
+		cout << NumberOfWeights << " number of weigts" << "\n";
+
+		for (int aqua = 0; aqua < NumberOfHiddenLayers + 1; aqua++) {																															//random weight generation
+			srand((unsigned int)time(NULL));
+			float a = 5.0;
+			float OL;
+			vector <float> LayerWeights;
+			//cout << "am here7" << "\n";
+			int Short = NumberOfOutputs * NumberOfinputs * UpAndDownScaling;
+			int Long = NumberOfinputs * NumberOfinputs * UpAndDownScaling;
+			int Longest = NumberOfinputs * UpAndDownScaling * NumberOfinputs * UpAndDownScaling;
+			//cout << aqua << " this is aqua\n";
+			//cout << Short << " :Short, " << Long << " :Long, " << Longest << " :Longest\n";
+
+			if (aqua == 0) {
+				//cout << "am here8" << "\n";
+				for (size_t i = 0; i < Long; i++) {
+					OL = (float(rand()) / float((RAND_MAX)) * a);
+					LayerWeights.push_back(OL);
+				}
+			}
+
+			if (aqua == (NumberOfHiddenLayers + 1)) {
+				//cout << "am here9" << "\n";
+				for (size_t i = 0; i < Short; i++) {
+					OL = (float(rand()) / float((RAND_MAX)) * a);
+					LayerWeights.push_back(OL);
+				}
+			}
+
+			if ( 0 < aqua < (NumberOfHiddenLayers+1)) {
+				//cout << "am here10" << "\n";
+				for (size_t i = 0; i < Longest; i++) {
+					//cout << i << "\n";
+					OL = (float(rand()) / float((RAND_MAX)) * a);
+					//cout << i << "haha" << "\n";
+					//cout << aqua << "lasflaskdjf" << "\n";
+					//cout << OL << typeid(OL).name() << " this is inwriten value\n";
+					LayerWeights.push_back(OL);
+
+					//cout << i << " lool" << "\n";
+				}
+				weights.push_back(LayerWeights);
+				//cout << "am here 11" << "\n";
+				LayerWeights.clear();
+			}
+
+		}
+
+		cout << "generation of weights done" << "\n";
+
 		for (const auto& file : filesystem::directory_iterator(Path)) {	//Creating vector including file paths to all trained companies
 			string CompanyName;
 			stringstream ss;
@@ -237,15 +292,15 @@ int main() {
 				//cout << "randomstarting point: " << RandomStartingPoint << endl;
 
 				//Input Preparation
-				vector <InputValues> Input;
-
+				vector <InputValues> InputValues;
+				
+				//things in an input
 				vector <float> InputNodeOpen;
 				vector <float> InputNodeClose;
 				vector <float> InputNodeHigh;
 				vector <float> InputNodeLow;
 				vector <int> InputNodeVolume;
 				vector <double> InputNodeAverage;
-				//vector <long double> ZScore;
 				vector<MovingZScores> OpenMovingZscores;
 				vector<MovingZScores> CloseMovingZscores;
 				vector<MovingZScores> HighMovingZscores;
@@ -261,32 +316,8 @@ int main() {
 				vector<RSI> RelativeStrengthIndex;
 				vector<RSI> RelativeStrength;
 
-				/*struct Inputs {
-					vector <float> InputNodeOpen;
-					vector <float> InputNodeClose;
-					vector <float> InputNodeHigh;
-					vector <float> InputNodeLow;
-					vector <int> InputNodeVolume;
-					vector <double> InputNodeAverage;
-					vector <long double> ZScore;
-					vector<MovingZScores> OpenMovingZscores;
-					vector<MovingZScores> CloseMovingZscores;
-					vector<MovingZScores> HighMovingZscores;
-					vector<MovingZScores> LowMovingZscores;
-					vector<MovingZScores> VolumeMovingZscores;
-					vector<MovingZScores> AverageMovingZscores;
-					vector<MovingAvarage> OpenMovingAvevrage;
-					vector<MovingAvarage> CloseMovingAvevrage;
-					vector<MovingAvarage> HighMovingAvevrage;
-					vector<MovingAvarage> LowMovingAvevrage;
-					vector<MovingAvarage> VolumeMovingAvevrage;
-					vector<MovingAvarage> AverageMovingAvevrage;
-					vector<RSI> RelativeStrengthIndex;
-					vector<RSI> RelativeStrength;
-				};*/
-
-
-
+				//int NumberOfWeights = 0;
+				
 
 
 				//cout << "am here1" << "\n";
@@ -841,9 +872,9 @@ int main() {
 				}
 
 				//cout << "am here5" << "\n";
-				// 
+																																			// Input preperations
 				for (int i = 0; i < LengthOfTrainingPeriod; i++) {
-					Input.push_back({InputNodeOpen[i], InputNodeClose[i], InputNodeHigh[i], InputNodeLow[i], InputNodeVolume[i], InputNodeAverage[i], OpenMovingZscores[i].ZScore5, OpenMovingZscores[i].ZScore10, OpenMovingZscores[i].ZScore30, CloseMovingZscores[i].ZScore5,
+					InputValues.push_back({InputNodeOpen[i], InputNodeClose[i], InputNodeHigh[i], InputNodeLow[i], InputNodeVolume[i], InputNodeAverage[i], OpenMovingZscores[i].ZScore5, OpenMovingZscores[i].ZScore10, OpenMovingZscores[i].ZScore30, CloseMovingZscores[i].ZScore5,
 						CloseMovingZscores[i].ZScore10, CloseMovingZscores[i].ZScore30, HighMovingZscores[i].ZScore5, HighMovingZscores[i].ZScore10, HighMovingZscores[i].ZScore30, LowMovingZscores[i].ZScore5, LowMovingZscores[i].ZScore10, LowMovingZscores[i].ZScore30,
 						VolumeMovingZscores[i].ZScore5, VolumeMovingZscores[i].ZScore10, VolumeMovingZscores[i].ZScore30, AverageMovingZscores[i].ZScore5, AverageMovingZscores[i].ZScore10, AverageMovingZscores[i].ZScore30, OpenMovingAvevrage[i].A5verage,
 						OpenMovingAvevrage[i].A10verage, OpenMovingAvevrage[i].A30verage, CloseMovingAvevrage[i].A5verage, CloseMovingAvevrage[i].A10verage, CloseMovingAvevrage[i].A30verage, HighMovingAvevrage[i].A5verage, HighMovingAvevrage[i].A10verage,
@@ -852,18 +883,107 @@ int main() {
 						RelativeStrength[i].R10SI, RelativeStrength[i].R30SI
 					});
 				}
-																																			//random weight generation
-				srand((unsigned int)time(NULL));
-				float a = 5.0;
-				for (size_t i = 0; i < (InputNodeClose.size() * 4); i++) {
-					float OL;
-					OL = (float(rand()) / float((RAND_MAX)) * a);	
-					ZerothLayer.push_back(OL);
-				}
 
+				//cout << "am here6" << "\n";
 
-				for (size_t i = 0; i < LengthOfTrainingPeriod; i++) {
-					long double a = 0;
+				/*for (size_t i = 0; i < weights.size(); i++)
+				{
+					for (int z = 0; z < weights[i].size(); z++) {
+						cout << weights[i][z] << "i: " << i << " z:" << z << "sdaaskdfjhalf\n";
+					}
+				}*/
+																																			//environment creation
+				vector <vector  <long double>> Nodes;		
+				
+				for (size_t day = 0; day < LengthOfTrainingPeriod; day++) {
+
+					for (int layer = 0; layer < (NumberOfHiddenLayers + 1); layer++) {
+						//cout << layer << "layer\n";
+						if (layer == 0) {
+							vector <long double> FirstRow;
+							for (int input = 0; input < (NumberOfinputs * 2); input++) {
+
+								//cout << "am here7" << "\n";
+								long double result = 0;
+								/*NodesOfFirst[layer].push_back */
+								result = ((weights[layer][input] * InputValues[day].InputNodeOpen) +
+									(weights[layer][input + 48] * InputValues[day].InputNodeClose) +
+									(weights[layer][input + (48 * 2)] * InputValues[day].InputNodeHigh) +
+									(weights[layer][input + (48 * 3)] * InputValues[day].InputNodeLow) +
+									(weights[layer][input + (48 * 4)] * InputValues[day].InputNodeVolume) +
+									(weights[layer][input + (48 * 5)] * InputValues[day].InputNodeAverage) +
+									(weights[layer][input + (48 * 6)] * InputValues[day].Open5MovingZscores) +
+									(weights[layer][input + (48 * 7)] * InputValues[day].Open10MovingZscores) +
+									(weights[layer][input + (48 * 8)] * InputValues[day].Open30MovingZscores) +
+									(weights[layer][input + (48 * 9)] * InputValues[day].Close5MovingZscores) +
+									(weights[layer][input + (48 * 10)] * InputValues[day].Close10MovingZscores) +
+									(weights[layer][input + (48 * 11)] * InputValues[day].Close30MovingZscores) +
+									(weights[layer][input + (48 * 12)] * InputValues[day].High5MovingZscores) +
+									(weights[layer][input + (48 * 13)] * InputValues[day].High10MovingZscores) +
+									(weights[layer][input + (48 * 14)] * InputValues[day].High30MovingZscores) +
+									(weights[layer][input + (48 * 15)] * InputValues[day].Low5MovingZscores) +
+									(weights[layer][input + (48 * 16)] * InputValues[day].Low10MovingZscores) +
+									(weights[layer][input + (48 * 17)] * InputValues[day].Low30MovingZscores) +
+									(weights[layer][input + (48 * 18)] * InputValues[day].Volume5MovingZscores) +
+									(weights[layer][input + (48 * 19)] * InputValues[day].Volume10MovingZscores) +
+									(weights[layer][input + (48 * 20)] * InputValues[day].Volume30MovingZscores) +
+									(weights[layer][input + (48 * 21)] * InputValues[day].Average5MovingZscores) +
+									(weights[layer][input + (48 * 22)] * InputValues[day].Average10MovingZscores) +
+									(weights[layer][input + (48 * 23)] * InputValues[day].Average30MovingZscores) +
+									(weights[layer][input + (48 * 24)] * InputValues[day].Open5MovingAvevrage) +
+									(weights[layer][input + (48 * 25)] * InputValues[day].Open10MovingAvevrage) +
+									(weights[layer][input + (48 * 26)] * InputValues[day].Open30MovingAvevrage) +
+									(weights[layer][input + (48 * 27)] * InputValues[day].Close5MovingAvevrage) +
+									(weights[layer][input + (48 * 28)] * InputValues[day].Close10MovingAvevrage) +
+									(weights[layer][input + (48 * 29)] * InputValues[day].Close30MovingAvevrage) +
+									(weights[layer][input + (48 * 30)] * InputValues[day].High5MovingAvevrage) +
+									(weights[layer][input + (48 * 31)] * InputValues[day].High10MovingAvevrage) +
+									(weights[layer][input + (48 * 32)] * InputValues[day].High30MovingAvevrage) +
+									(weights[layer][input + (48 * 33)] * InputValues[day].Low5MovingAvevrage) +
+									(weights[layer][input + (48 * 34)] * InputValues[day].Low10MovingAvevrage) +
+									(weights[layer][input + (48 * 35)] * InputValues[day].Low30MovingAvevrage) +
+									(weights[layer][input + (48 * 36)] * InputValues[day].Volume5MovingAvevrage) +
+									(weights[layer][input + (48 * 37)] * InputValues[day].Volume10MovingAvevrage) +
+									(weights[layer][input + (48 * 38)] * InputValues[day].Volume30MovingAvevrage) +
+									(weights[layer][input + (48 * 39)] * InputValues[day].Average5MovingAvevrage) +
+									(weights[layer][input + (48 * 40)] * InputValues[day].Average10MovingAvevrage) +
+									(weights[layer][input + (48 * 41)] * InputValues[day].Average30MovingAvevrage) +
+									(weights[layer][input + (48 * 42)] * InputValues[day].Relative5StrengthIndex) +
+									(weights[layer][input + (48 * 43)] * InputValues[day].Relative10StrengthIndex) +
+									(weights[layer][input + (48 * 44)] * InputValues[day].Relative30StrengthIndex) +
+									(weights[layer][input + (48 * 45)] * InputValues[day].Relative5Strength) +
+									(weights[layer][input + (48 * 46)] * InputValues[day].Relative10Strength) +
+									(weights[layer][input + (48 * 47)] * InputValues[day].Relative30Strength) );
+								//(Nodes[0]).push_back(1);
+								//cout << result << "\n";
+								FirstRow.push_back(result);
+								//(Nodes[layer]).push_back(result);
+								//cout << "am here8\n";
+							}
+							Nodes.push_back(FirstRow);
+							//cout << "am here9\n";
+						}
+
+						if (layer > 0) {
+							//cout << "am here10\n";
+							vector <long double> MidleRows;
+							for (int out = 0; out < (NumberOfinputs * 2); out++) {
+								long double result = 0;
+								for (int input = 0; input < (NumberOfinputs * 2); input++) {
+									result = result + (Nodes[layer - 1][input] * weights[layer][out * input]);
+								}
+								//cout << "am here11\n";
+
+								MidleRows.push_back(result);
+							}
+							//cout << "am here12\n";
+							Nodes.push_back(MidleRows);
+							//cout << layer << "\n";
+						}
+						
+					}
+
+					/*long double a = 0;
 					long double b = 0;
 					
 					while (InputNodeClose[i] > 1) {
@@ -878,7 +998,7 @@ int main() {
 					
 					a = 1 / (1 + pow(e, -a));			//must use Relu instead
 					b = 1 / (1 + pow(e, -b));
-					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";
+					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";*/
 				}
 			}
 		}
@@ -893,7 +1013,7 @@ int main() {
 }
 
 /////////////////////////////functions//////////////////////////
-void shrink(vector<float>Vector) {
+/*void shrink(vector<float>Vector) {
 	for (size_t i = 0; i < Vector.size(); i++) {
 		while (Vector[i] > 1) {
 			Vector[i] = Vector[i] / 10;
@@ -968,6 +1088,6 @@ vector<MovingZScores> Zmoving(int LengthOfTrainingPeriod, int RandomFilePicker, 
 		return Zscores;
 	}
 }
-
+*/
 	
 

@@ -1,2 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<DEFECTS></DEFECTS>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\</FILEPATH>
+      <FILENAME>DeepQlearning.cpp</FILENAME>
+      <LINE>114</LINE>
+      <COLUMN>141</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Aritmetické přetečení: Používá se operátor * na 4 bajtovou hodnotu a pak se přetypovává výsledek na 8 bajtovou hodnotu. Pokud chcete zabránit přetečení, přetypujte hodnotu na širší typ dříve, než zavoláte operátor * (io.2).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>82</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\</FILEPATH>
+      <FILENAME>DeepQlearning.cpp</FILENAME>
+      <LINE>910</LINE>
+      <COLUMN>76</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Aritmetické přetečení: Používá se operátor + na 4 bajtovou hodnotu a pak se přetypovává výsledek na 8 bajtovou hodnotu. Pokud chcete zabránit přetečení, přetypujte hodnotu na širší typ dříve, než zavoláte operátor + (io.2).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>82</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\</FILEPATH>
+      <FILENAME>DeepQlearning.cpp</FILENAME>
+      <LINE>909</LINE>
+      <COLUMN>77</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Aritmetické přetečení: Používá se operátor + na 4 bajtovou hodnotu a pak se přetypovává výsledek na 8 bajtovou hodnotu. Pokud chcete zabránit přetečení, přetypujte hodnotu na širší typ dříve, než zavoláte operátor + (io.2).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>82</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\</FILEPATH>
+      <FILENAME>DeepQlearning.cpp</FILENAME>
+      <LINE>908</LINE>
+      <COLUMN>72</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Aritmetické přetečení: Používá se operátor + na 4 bajtovou hodnotu a pak se přetypovává výsledek na 8 bajtovou hodnotu. Pokud chcete zabránit přetečení, přetypujte hodnotu na širší typ dříve, než zavoláte operátor + (io.2).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>82</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\</FILEPATH>
+      <FILENAME>DeepQlearning.cpp</FILENAME>
+      <LINE>907</LINE>
+      <COLUMN>76</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Aritmetické přetečení: Používá se operátor + na 4 bajtovou hodnotu a pak se přetypovává výsledek na 8 bajtovou hodnotu. Pokud chcete zabránit přetečení, přetypujte hodnotu na širší typ dříve, než zavoláte operátor + (io.2).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>82</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\</FILEPATH>
+      <FILENAME>DeepQlearning.cpp</FILENAME>
+      <LINE>907</LINE>
+      <COLUMN>42</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Aritmetické přetečení: Používá se operátor * na 4 bajtovou hodnotu a pak se přetypovává výsledek na 8 bajtovou hodnotu. Pokud chcete zabránit přetečení, přetypujte hodnotu na širší typ dříve, než zavoláte operátor * (io.2).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>82</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

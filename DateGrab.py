@@ -8,7 +8,7 @@ import os
 import time
 import datetime
 import yfinance as yf
-import clearing
+#import clearing
 
 
 ##################################################################
