@@ -13,7 +13,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cmath>
-#include <algorithm>
+//#include <algorithm>
 #include "Structs.h"
 
 
@@ -92,7 +92,7 @@ int main() {
 	int NumberOfOutputs = 3;
 	double UpAndDownScaling = 2;
 	long double LearningRate = 0;
-	int NumberOfWeights = 0;
+	double NumberOfWeights = 0;
 	vector <vector <float>> weights;
 
 	//////////result evaluation/////////////
@@ -122,9 +122,9 @@ int main() {
 			float OL;
 			vector <float> LayerWeights;
 			//cout << "am here7" << "\n";
-			int Short = NumberOfOutputs * NumberOfinputs * UpAndDownScaling;
-			int Long = NumberOfinputs * NumberOfinputs * UpAndDownScaling;
-			int Longest = NumberOfinputs * UpAndDownScaling * NumberOfinputs * UpAndDownScaling;
+			double Short = NumberOfOutputs * NumberOfinputs * UpAndDownScaling;
+			double Long = NumberOfinputs * NumberOfinputs * UpAndDownScaling;
+			double Longest = NumberOfinputs * UpAndDownScaling * NumberOfinputs * UpAndDownScaling;
 			//cout << aqua << " this is aqua\n";
 			//cout << Short << " :Short, " << Long << " :Long, " << Longest << " :Longest\n";
 
@@ -212,7 +212,7 @@ int main() {
 				cc >> SeparateClosePrice;
 				Close.push_back(SeparateClosePrice);
 
-				float SeparateVolumePrice;
+				int SeparateVolumePrice;
 				stringstream dd;
 				dd << row[5];
 				dd >> SeparateVolumePrice;
@@ -296,8 +296,8 @@ int main() {
 				vector <InputValues> InputValues;
 				
 				//things in an input
-				long double Capital = StartingCapital;
-				long double Holdings = 0;
+				long double Capital = StartingCapital;																					//in money
+				long double Holdings = 0;																								//in stocks owned
 				vector <float> InputNodeOpen;
 				vector <float> InputNodeClose;
 				vector <float> InputNodeHigh;
@@ -1009,22 +1009,17 @@ int main() {
 					//0 = buy
 					//1 = sell
 					//2 = hold
-					int execute = max({ Nodes[NumberOfHiddenLayers + 1][0], Nodes[NumberOfHiddenLayers + 1][1], Nodes[NumberOfHiddenLayers + 1][2] });
-					if (Nodes[NumberOfHiddenLayers + 1][0] == execute) {
-						if (Nodes[NumberOfHiddenLayers + 1][0] < Nodes[NumberOfHiddenLayers + 1][2]) {
-							 = Nodes[NumberOfHiddenLayers + 1][0] * All[RandomFilePicker][RandomStartingPoint + 1].Open;
-						}
+					
+					if (Nodes[NumberOfHiddenLayers + 1][0] >= Nodes[NumberOfHiddenLayers + 1][1] && Nodes[NumberOfHiddenLayers + 1][0] >= Nodes[NumberOfHiddenLayers + 1][2]) {
+						Holdings = (Capital * Nodes[NumberOfHiddenLayers + 1][0]) / All[RandomFilePicker][RandomStartingPoint + day + 1].Open;
 					}
-					if (Nodes[NumberOfHiddenLayers + 1][1] < Nodes[NumberOfHiddenLayers + 1][2]) {
-						if (Nodes[NumberOfHiddenLayers + 1][1] < Nodes[NumberOfHiddenLayers + 1][0]) {
+					if (Nodes[NumberOfHiddenLayers + 1][1] >= Nodes[NumberOfHiddenLayers + 1][2] && Nodes[NumberOfHiddenLayers + 1][1] >= Nodes[NumberOfHiddenLayers + 1][0]) {
+						Capital = (Holdings * Nodes[NumberOfHiddenLayers + 1][1]) * All[RandomFilePicker][RandomStartingPoint + day + 1].Open;
+					}
 
-						}
-					}
-					if (Nodes[NumberOfHiddenLayers + 1][2] < Nodes[NumberOfHiddenLayers + 1][0]) {
-						if (Nodes[NumberOfHiddenLayers + 1][2] < Nodes[NumberOfHiddenLayers + 1][1]) {
-
-						}
-					}
+					/*if (Nodes[NumberOfHiddenLayers + 1][2] >= Nodes[NumberOfHiddenLayers + 1][0] && Nodes[NumberOfHiddenLayers + 1][2] >= Nodes[NumberOfHiddenLayers + 1][1]) {
+						
+					}*/
 
 					/*long double a = 0;
 					long double b = 0;

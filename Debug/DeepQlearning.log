@@ -1,22 +1,10 @@
 ﻿  DeepQlearning.cpp
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(114,179): warning C4244: =: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(124,14): warning C4244: inicializování: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(125,13): warning C4244: inicializování: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(126,16): warning C4244: inicializování: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(132,26): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(140,26): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(146,11): warning C4804: <: Potenciálně nebezpečné používání typu bool v operaci
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(148,26): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(179,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(218,22): warning C4244: argument: float se převádí na _Ty; může dojít ke ztrátě dat.
-          with
-          [
-              _Ty=int
-          ]
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(245,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(246,22): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(255,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(256,22): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(265,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(898,30): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(147,11): warning C4804: <: Potenciálně nebezpečné používání typu bool v operaci
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(180,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(246,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(247,22): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(256,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(257,22): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(266,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(901,30): warning C4018: <: signed/unsigned – neshoda
   DeepQlearning.vcxproj -> D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe
