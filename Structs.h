@@ -101,5 +101,7 @@ struct InputValues {
 	long double Relative30StrengthIndex;
 	long double Relative5Strength;
 	long double Relative10Strength;
-	long double Relative30Strength;//vector <long double> ZScore;
+	long double Relative30Strength;
+	//long double Capital;
+	//long double Holdings;//vector <long double> ZScore;
 };

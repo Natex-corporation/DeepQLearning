@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cmath>
+#include <algorithm>
 #include "Structs.h"
 
 
@@ -81,13 +82,13 @@ vector <vector <float>> bias;
 
 int main() {
 	//////////training length///////////////
-	int SampleSize = 1000;													//Add here the number of tries for choosing the company/How many companies will be learned on
+	int SampleSize = 1000;												//Add here the number of tries for choosing the company/How many companies will be learned on
 	int LengthOfTrainingPeriod = 365;									//How many days are wee leting the model train
 	int NumberOfRepetitions = 20;										//How many times to look at the specified time period	
 	
 	//////////network parameters////////////
 	int NumberOfHiddenLayers = 30;
-	int NumberOfinputs = 48;
+	int NumberOfinputs = 50;
 	int NumberOfOutputs = 3;
 	double UpAndDownScaling = 2;
 	long double LearningRate = 0;
@@ -95,13 +96,13 @@ int main() {
 	vector <vector <float>> weights;
 
 	//////////result evaluation/////////////
-	int PercentageGain = 100;											//How many percent gained in the time frame
-	int StartingCapital = 100000;										//with how much money does the model start
+	//int PercentageGain = 100;											//How many percent gained in the time frame
+	int StartingCapital = 25000;										//with how much money does the model start
 	vector <string> FilePaths;
 	string Path = "LearningData" /*"test"*/;							//Location of training data
 	string TrainingControler;
 
-	//vector <float> ZerothLayer;											//substuitude for vector of all layers
+	//vector <float> ZerothLayer;										//substuitude for vector of all layers
 
 	const long double e = 2.71828182845904523536;
 	
@@ -295,6 +296,8 @@ int main() {
 				vector <InputValues> InputValues;
 				
 				//things in an input
+				long double Capital = StartingCapital;
+				long double Holdings = 0;
 				vector <float> InputNodeOpen;
 				vector <float> InputNodeClose;
 				vector <float> InputNodeHigh;
@@ -880,7 +883,7 @@ int main() {
 						OpenMovingAvevrage[i].A10verage, OpenMovingAvevrage[i].A30verage, CloseMovingAvevrage[i].A5verage, CloseMovingAvevrage[i].A10verage, CloseMovingAvevrage[i].A30verage, HighMovingAvevrage[i].A5verage, HighMovingAvevrage[i].A10verage,
 						HighMovingAvevrage[i].A30verage, LowMovingAvevrage[i].A5verage, LowMovingAvevrage[i].A10verage, LowMovingAvevrage[i].A30verage, VolumeMovingAvevrage[i].A5verage, VolumeMovingAvevrage[i].A10verage, VolumeMovingAvevrage[i].A30verage,
 						AverageMovingAvevrage[i].A5verage, AverageMovingAvevrage[i].A10verage, AverageMovingAvevrage[i].A30verage, RelativeStrengthIndex[i].R5SI, RelativeStrengthIndex[i].R10SI, RelativeStrengthIndex[i].R30SI, RelativeStrength[i].R5SI,
-						RelativeStrength[i].R10SI, RelativeStrength[i].R30SI
+						RelativeStrength[i].R10SI/*, RelativeStrength[i].R30SI, Capital, Holdings*/
 					});
 				}
 
@@ -893,9 +896,11 @@ int main() {
 					}
 				}*/
 																																			//environment creation
-				vector <vector  <long double>> Nodes;		
+				vector <vector  <long double>> Nodes;
 				
 				for (size_t day = 0; day < LengthOfTrainingPeriod; day++) {
+
+					long double BuingPower = 0;
 
 					for (int layer = 0; layer < (NumberOfHiddenLayers + 1); layer++) {
 						//cout << layer << "layer\n";
@@ -953,8 +958,12 @@ int main() {
 									(weights[layer][input + (48 * 44)] * InputValues[day].Relative30StrengthIndex) +
 									(weights[layer][input + (48 * 45)] * InputValues[day].Relative5Strength) +
 									(weights[layer][input + (48 * 46)] * InputValues[day].Relative10Strength) +
-									(weights[layer][input + (48 * 47)] * InputValues[day].Relative30Strength) );
+									(weights[layer][input + (48 * 47)] * InputValues[day].Relative30Strength) +
+									(weights[layer][input + (48 * 48)] * Capital) + (weights[layer][input + (48 * 49)] * Holdings));
 								//(Nodes[0]).push_back(1);
+								
+								result = 1 / (1 + pow(e, -result));
+
 								//cout << result << "\n";
 								FirstRow.push_back(result);
 								//(Nodes[layer]).push_back(result);
@@ -973,6 +982,7 @@ int main() {
 									result = result + (Nodes[layer - 1][input] * weights[layer][out * input]);
 								}
 								//cout << "am here11\n";
+								result = 1 / (1 + pow(e, -result));
 
 								MidleRows.push_back(result);
 							}
@@ -980,7 +990,40 @@ int main() {
 							Nodes.push_back(MidleRows);
 							//cout << layer << "\n";
 						}
+
+						if (layer == (NumberOfHiddenLayers + 1)) {
+							vector <long double> LastRows;
+							for (int output = 0; output < NumberOfOutputs; output++) {
+								long double result = 0;
+								for (int input = 0; input < (NumberOfinputs * 2); input++) {
+									result = result + (Nodes[layer - 1][input] * weights[layer][input * output]);
+								}
+								result = 1 / (1 + pow(e, -result));
+								LastRows.push_back(result);
+							}
+							Nodes.push_back(LastRows);							
+						}
 						
+					}
+
+					//0 = buy
+					//1 = sell
+					//2 = hold
+					int execute = max({ Nodes[NumberOfHiddenLayers + 1][0], Nodes[NumberOfHiddenLayers + 1][1], Nodes[NumberOfHiddenLayers + 1][2] });
+					if (Nodes[NumberOfHiddenLayers + 1][0] == execute) {
+						if (Nodes[NumberOfHiddenLayers + 1][0] < Nodes[NumberOfHiddenLayers + 1][2]) {
+							 = Nodes[NumberOfHiddenLayers + 1][0] * All[RandomFilePicker][RandomStartingPoint + 1].Open;
+						}
+					}
+					if (Nodes[NumberOfHiddenLayers + 1][1] < Nodes[NumberOfHiddenLayers + 1][2]) {
+						if (Nodes[NumberOfHiddenLayers + 1][1] < Nodes[NumberOfHiddenLayers + 1][0]) {
+
+						}
+					}
+					if (Nodes[NumberOfHiddenLayers + 1][2] < Nodes[NumberOfHiddenLayers + 1][0]) {
+						if (Nodes[NumberOfHiddenLayers + 1][2] < Nodes[NumberOfHiddenLayers + 1][1]) {
+
+						}
 					}
 
 					/*long double a = 0;
@@ -1000,6 +1043,8 @@ int main() {
 					b = 1 / (1 + pow(e, -b));
 					//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";*/
 				}
+																																			//evaluation of the run
+
 			}
 		}
 	}
