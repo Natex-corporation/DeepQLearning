@@ -95,6 +95,7 @@ int main() {
 	double UpAndDownScaling = 2;
 	long double LearningRate = 0;
 	double NumberOfWeights = 0;
+	int precision = 10000;
 	vector <vector <float>> weights;
 
 	//////////result evaluation/////////////
@@ -120,7 +121,7 @@ int main() {
 
 		for (int aqua = 0; aqua < NumberOfHiddenLayers + 1; aqua++) {																															//random weight generation
 			srand((unsigned int)time(NULL));
-			float a = 5.0;
+			float a = 1.0;
 			float OL;
 			vector <float> LayerWeights;
 			double Short = NumberOfOutputs * NumberOfinputs * UpAndDownScaling;
@@ -130,7 +131,7 @@ int main() {
 			if (aqua == 0) {
 				//cout << "am here8" << "\n";
 				for (size_t i = 0; i < Long; i++) {
-					OL = (float(rand()) / float((RAND_MAX)) * a);
+					OL = (float(rand()) / (float((RAND_MAX)) * a) / 10000);
 					LayerWeights.push_back(OL);
 				}
 			}
@@ -159,9 +160,11 @@ int main() {
 				//cout << "am here 11" << "\n";
 				LayerWeights.clear();
 			}
-
 		}
-
+		/*for (int i = 0; i < weights[1].size(); i++) {
+		cout << weights[1][i] <<"\n";
+		}*/
+		
 		cout << "generation of weights done" << "\n";
 
 		for (const auto& file : filesystem::directory_iterator(Path)) {	//Creating vector including file paths to all trained companies
@@ -247,9 +250,9 @@ int main() {
 				All.erase(All.begin() + i);
 				cout << All[i].size() << " this is too small" << i << "\n";
 			}
-			else {
+			/*else {
 				cout << "vectro is long enough" << "\n";
-			}
+			}*/
 		}
 
 		for (int i = 0; i < All.size(); i++) {
@@ -257,14 +260,14 @@ int main() {
 				All.erase(All.begin() + i);
 				cout << All[i].size() << " this is too small" << i << "\n";
 			}
-			else {
+			/*else {
 				cout << "vectro is long enough" << "\n";
-			}
+			}*/
 		}
 
-		for (int i = 0; i < All.size(); i++) {
+		/*for (int i = 0; i < All.size(); i++) {
 			cout << i << "All[i].size: " << All[i].size() << "\n";
-		}
+		}*/
 
 
 		for (int i = 1; i <= SampleSize; i++) {																							// Random file picker
@@ -402,6 +405,7 @@ int main() {
 					ZScore5 = (All[RandomFilePicker][RandomStartingPoint + i].Close - M5ean) / St5deviation;
 					ZScore10 = (All[RandomFilePicker][RandomStartingPoint + i].Close - M10ean) / St10deviation;
 					ZScore30 = (All[RandomFilePicker][RandomStartingPoint + i].Close - M30ean) / St30deviation;
+					//cout << ZScore5 << "\n";
 
 					ZScore5 = shrinking(ZScore5);
 					ZScore10 = shrinking(ZScore10);
@@ -875,7 +879,7 @@ int main() {
 					}
 					Relative5Strength = ((PositiveGrowth / 4) / (NegativeGrowth / 4));
 					Relative5StrengthIndex = 100 - (100 / (1 + Relative5Strength));
-					cout << Relative5Strength << Relative5StrengthIndex << "\n";
+					//cout << Relative5Strength << Relative5StrengthIndex << "\n";
 					Relative5Strength = shrinking(Relative5Strength);
 					Relative5StrengthIndex = shrinking(Relative5StrengthIndex);
 
@@ -897,7 +901,7 @@ int main() {
 					}
 					Relative10Strength = ((PositiveGrowth / 9) / (NegativeGrowth / 9));
 					Relative10StrengthIndex = 100 - (100 / (1 + Relative5Strength));
-					cout << Relative10Strength << Relative10StrengthIndex << "\n";
+					//cout << Relative10Strength << Relative10StrengthIndex << "\n";
 					Relative10Strength = shrinking(Relative10Strength);
 					Relative10StrengthIndex = shrinking(Relative10StrengthIndex);
 
@@ -919,12 +923,12 @@ int main() {
 					}
 					Relative30Strength = ((PositiveGrowth / 29) / (NegativeGrowth / 29));
 					Relative30StrengthIndex = 100 - (100 / (1 + Relative5Strength));
-					cout << Relative30Strength << Relative30StrengthIndex << "\n";
+					//cout << Relative30Strength << Relative30StrengthIndex << "\n";
 					Relative30Strength = shrinking(Relative30Strength);
 					Relative30StrengthIndex = shrinking(Relative30StrengthIndex);
 
 					AverageValue.clear();
-					cout << "am here4,1\n";
+					//cout << "am here4,1\n";
 
 					RelativeStrength.push_back({ Relative5Strength, Relative10Strength, Relative30Strength });
 					RelativeStrengthIndex.push_back({ Relative5StrengthIndex, Relative10StrengthIndex, Relative30StrengthIndex });
@@ -945,16 +949,16 @@ int main() {
 
 				cout << "am here6" << "\n";
 
-				for (int i = 0; i < 1/*LengthOfTrainingPeriod*/; i++) {
+				/*for (int i = 0; i < 1/*LengthOfTrainingPeriod; i++) {
 					cout << InputNodeOpen[i] <<" " << InputNodeClose[i] <<" "<< InputNodeHigh[i] << " " << " " << InputNodeLow[i] << " " << InputNodeVolume[i] << " " << InputNodeAverage[i] << OpenMovingZscores[i].ZScore5 << " " << OpenMovingZscores[i].ZScore10 << " " << OpenMovingZscores[i].ZScore30 << " " << CloseMovingZscores[i].ZScore5 << " " <<
 						CloseMovingZscores[i].ZScore10 << " " << CloseMovingZscores[i].ZScore30 << " " << HighMovingZscores[i].ZScore5 << " " << HighMovingZscores[i].ZScore10 << " " << HighMovingZscores[i].ZScore30 << " " << LowMovingZscores[i].ZScore5 << " " << LowMovingZscores[i].ZScore10 << " " << LowMovingZscores[i].ZScore30 << " " <<
 						VolumeMovingZscores[i].ZScore5 << " " << VolumeMovingZscores[i].ZScore10 << " " << VolumeMovingZscores[i].ZScore30 << " " << AverageMovingZscores[i].ZScore5 << " " << AverageMovingZscores[i].ZScore10 << " " << AverageMovingZscores[i].ZScore30 << " " << OpenMovingAvevrage[i].A5verage << " " <<
 						OpenMovingAvevrage[i].A10verage << " " << OpenMovingAvevrage[i].A30verage << " " << CloseMovingAvevrage[i].A5verage << " " << CloseMovingAvevrage[i].A10verage << " " << CloseMovingAvevrage[i].A30verage << " " << HighMovingAvevrage[i].A5verage << " " << HighMovingAvevrage[i].A10verage << " " <<
 						HighMovingAvevrage[i].A30verage << " " << LowMovingAvevrage[i].A5verage << " " << LowMovingAvevrage[i].A10verage << " " << LowMovingAvevrage[i].A30verage << " " << VolumeMovingAvevrage[i].A5verage << VolumeMovingAvevrage[i].A10verage << " " << VolumeMovingAvevrage[i].A30verage << " " <<
 						AverageMovingAvevrage[i].A5verage << " " << AverageMovingAvevrage[i].A10verage << " " << AverageMovingAvevrage[i].A30verage << " " << RelativeStrengthIndex[i].R5SI << " " << RelativeStrengthIndex[i].R10SI << " " << RelativeStrengthIndex[i].R30SI << " " << RelativeStrength[i].R5SI << " " << 
-						RelativeStrength[i].R10SI << " " << RelativeStrength[i].R30SI; /*Capital, Holdings*/
+						RelativeStrength[i].R10SI << " " << RelativeStrength[i].R30SI; Capital, Holdings
 						;
-				}
+				}*/
 																																				//environment creation
 					long double Capital = StartingCapital;																						//in money
 					long double Holdings = 0;																									//in stocks owned																												
@@ -962,126 +966,127 @@ int main() {
 
 					for (size_t day = 0; day < LengthOfTrainingPeriod; day++) {
 
-						long double BuingPower = 0;
+						//long double BuingPower = 0;
 
 						for (int layer = 0; layer < (NumberOfHiddenLayers + 1); layer++) {
-							//cout << layer << "layer\n";
+							
 							if (layer == 0) {
+								
 								vector <long double> FirstRow;
 								for (int input = 0; input < (NumberOfinputs * 2); input++) {
 
-									//cout << "am here7" << "\n";
 									long double result = 0;
-									/*NodesOfFirst[layer].push_back */
+
 									result = ((weights[layer][input] * InputValues[day].InputNodeOpen) +
-										(weights[layer][input + 48] * InputValues[day].InputNodeClose) +
-										(weights[layer][input + (48 * 2)] * InputValues[day].InputNodeHigh) +
-										(weights[layer][input + (48 * 3)] * InputValues[day].InputNodeLow) +
-										(weights[layer][input + (48 * 4)] * InputValues[day].InputNodeVolume) +
-										(weights[layer][input + (48 * 5)] * InputValues[day].InputNodeAverage) +
-										(weights[layer][input + (48 * 6)] * InputValues[day].Open5MovingZscores) +
-										(weights[layer][input + (48 * 7)] * InputValues[day].Open10MovingZscores) +
-										(weights[layer][input + (48 * 8)] * InputValues[day].Open30MovingZscores) +
-										(weights[layer][input + (48 * 9)] * InputValues[day].Close5MovingZscores) +
-										(weights[layer][input + (48 * 10)] * InputValues[day].Close10MovingZscores) +
-										(weights[layer][input + (48 * 11)] * InputValues[day].Close30MovingZscores) +
-										(weights[layer][input + (48 * 12)] * InputValues[day].High5MovingZscores) +
-										(weights[layer][input + (48 * 13)] * InputValues[day].High10MovingZscores) +
-										(weights[layer][input + (48 * 14)] * InputValues[day].High30MovingZscores) +
-										(weights[layer][input + (48 * 15)] * InputValues[day].Low5MovingZscores) +
-										(weights[layer][input + (48 * 16)] * InputValues[day].Low10MovingZscores) +
-										(weights[layer][input + (48 * 17)] * InputValues[day].Low30MovingZscores) +
-										(weights[layer][input + (48 * 18)] * InputValues[day].Volume5MovingZscores) +
-										(weights[layer][input + (48 * 19)] * InputValues[day].Volume10MovingZscores) +
-										(weights[layer][input + (48 * 20)] * InputValues[day].Volume30MovingZscores) +
-										(weights[layer][input + (48 * 21)] * InputValues[day].Average5MovingZscores) +
-										(weights[layer][input + (48 * 22)] * InputValues[day].Average10MovingZscores) +
-										(weights[layer][input + (48 * 23)] * InputValues[day].Average30MovingZscores) +
-										(weights[layer][input + (48 * 24)] * InputValues[day].Open5MovingAvevrage) +
-										(weights[layer][input + (48 * 25)] * InputValues[day].Open10MovingAvevrage) +
-										(weights[layer][input + (48 * 26)] * InputValues[day].Open30MovingAvevrage) +
-										(weights[layer][input + (48 * 27)] * InputValues[day].Close5MovingAvevrage) +
-										(weights[layer][input + (48 * 28)] * InputValues[day].Close10MovingAvevrage) +
-										(weights[layer][input + (48 * 29)] * InputValues[day].Close30MovingAvevrage) +
-										(weights[layer][input + (48 * 30)] * InputValues[day].High5MovingAvevrage) +
-										(weights[layer][input + (48 * 31)] * InputValues[day].High10MovingAvevrage) +
-										(weights[layer][input + (48 * 32)] * InputValues[day].High30MovingAvevrage) +
-										(weights[layer][input + (48 * 33)] * InputValues[day].Low5MovingAvevrage) +
-										(weights[layer][input + (48 * 34)] * InputValues[day].Low10MovingAvevrage) +
-										(weights[layer][input + (48 * 35)] * InputValues[day].Low30MovingAvevrage) +
-										(weights[layer][input + (48 * 36)] * InputValues[day].Volume5MovingAvevrage) +
-										(weights[layer][input + (48 * 37)] * InputValues[day].Volume10MovingAvevrage) +
-										(weights[layer][input + (48 * 38)] * InputValues[day].Volume30MovingAvevrage) +
-										(weights[layer][input + (48 * 39)] * InputValues[day].Average5MovingAvevrage) +
-										(weights[layer][input + (48 * 40)] * InputValues[day].Average10MovingAvevrage) +
-										(weights[layer][input + (48 * 41)] * InputValues[day].Average30MovingAvevrage) +
-										(weights[layer][input + (48 * 42)] * InputValues[day].Relative5StrengthIndex) +
-										(weights[layer][input + (48 * 43)] * InputValues[day].Relative10StrengthIndex) +
-										(weights[layer][input + (48 * 44)] * InputValues[day].Relative30StrengthIndex) +
-										(weights[layer][input + (48 * 45)] * InputValues[day].Relative5Strength) +
-										(weights[layer][input + (48 * 46)] * InputValues[day].Relative10Strength) +
-										(weights[layer][input + (48 * 47)] * InputValues[day].Relative30Strength) +
-										(weights[layer][input + (48 * 48)] * Capital) + (weights[layer][input + (48 * 49)] * Holdings));
-									//(Nodes[0]).push_back(1);
-
-									result = 1 / (1 + pow(e, -result));
-
-									//cout << result << "\n";
+										(weights[layer][input + NumberOfinputs] * InputValues[day].InputNodeClose) +
+										(weights[layer][input + (NumberOfinputs * 2)] * InputValues[day].InputNodeHigh) +
+										(weights[layer][input + (NumberOfinputs * 3)] * InputValues[day].InputNodeLow) +
+										(weights[layer][input + (NumberOfinputs * 4)] * InputValues[day].InputNodeVolume) +
+										(weights[layer][input + (NumberOfinputs * 5)] * InputValues[day].InputNodeAverage) +
+										(weights[layer][input + (NumberOfinputs * 6)] * InputValues[day].Open5MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 7)] * InputValues[day].Open10MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 8)] * InputValues[day].Open30MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 9)] * InputValues[day].Close5MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 10)] * InputValues[day].Close10MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 11)] * InputValues[day].Close30MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 12)] * InputValues[day].High5MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 13)] * InputValues[day].High10MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 14)] * InputValues[day].High30MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 15)] * InputValues[day].Low5MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 16)] * InputValues[day].Low10MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 17)] * InputValues[day].Low30MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 18)] * InputValues[day].Volume5MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 19)] * InputValues[day].Volume10MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 20)] * InputValues[day].Volume30MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 21)] * InputValues[day].Average5MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 22)] * InputValues[day].Average10MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 23)] * InputValues[day].Average30MovingZscores) +
+										(weights[layer][input + (NumberOfinputs * 24)] * InputValues[day].Open5MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 25)] * InputValues[day].Open10MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 26)] * InputValues[day].Open30MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 27)] * InputValues[day].Close5MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 28)] * InputValues[day].Close10MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 29)] * InputValues[day].Close30MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 30)] * InputValues[day].High5MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 31)] * InputValues[day].High10MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 32)] * InputValues[day].High30MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 33)] * InputValues[day].Low5MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 34)] * InputValues[day].Low10MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 35)] * InputValues[day].Low30MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 36)] * InputValues[day].Volume5MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 37)] * InputValues[day].Volume10MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 38)] * InputValues[day].Volume30MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 39)] * InputValues[day].Average5MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 40)] * InputValues[day].Average10MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 41)] * InputValues[day].Average30MovingAvevrage) +
+										(weights[layer][input + (NumberOfinputs * 42)] * InputValues[day].Relative5StrengthIndex) +
+										(weights[layer][input + (NumberOfinputs * 43)] * InputValues[day].Relative10StrengthIndex) +
+										(weights[layer][input + (NumberOfinputs * 44)] * InputValues[day].Relative30StrengthIndex) +
+										(weights[layer][input + (NumberOfinputs * 45)] * InputValues[day].Relative5Strength) +
+										(weights[layer][input + (NumberOfinputs * 46)] * InputValues[day].Relative10Strength) +
+										(weights[layer][input + (NumberOfinputs * 47)] * InputValues[day].Relative30Strength) +
+										(weights[layer][input + (NumberOfinputs * 48)] * Capital) + (weights[layer][input + (48 * 49)] * Holdings));
+									
+									long double ResultPlusOne = result + 1;
+									result = (result / ResultPlusOne);
+									result = round(result * precision) / precision;
 									FirstRow.push_back(result);
-									//(Nodes[layer]).push_back(result);
-									//cout << "am here8\n";
 								}
 								Nodes.push_back(FirstRow);
-								//cout << "am here9\n";
+								FirstRow.clear();
 							}
 
-							if (layer > 0) {
-								//cout << "am here10\n";
+							if (layer > 0 && layer < NumberOfHiddenLayers) {
 								vector <long double> MidleRows;
 								for (int out = 0; out < (NumberOfinputs * 2); out++) {
 									long double result = 0;
+
 									for (int input = 0; input < (NumberOfinputs * 2); input++) {
 										result = result + (Nodes[layer - 1][input] * weights[layer][out * input]);
 									}
-									//cout << "am here11\n";
-									result = 1 / (1 + pow(e, -result));
-
+									long double ResultPlusOne = result + 1;
+									result = (result / ResultPlusOne);
+									result = round(result * precision) / precision;
 									MidleRows.push_back(result);
 								}
-								//cout << "am here12\n";
 								Nodes.push_back(MidleRows);
-								//cout << layer << "\n";
+								
 							}
-							cout << "am here13\n";
-							if (layer == (NumberOfHiddenLayers + 1)) {
+							if (layer == (NumberOfHiddenLayers)) {
 								vector <long double> LastRows;
 								for (int output = 0; output < NumberOfOutputs; output++) {
 									long double result = 0;
 									for (int input = 0; input < (NumberOfinputs * 2); input++) {
 										result = result + (Nodes[layer - 1][input] * weights[layer][input * output]);
 									}
-									result = 1 / (1 + pow(e, -result));
+									long double ResultPlusOne = result + 1;
+									result = (result / ResultPlusOne);
+									result = round(result * precision) / precision;
 									LastRows.push_back(result);
 								}
 								Nodes.push_back(LastRows);
+								LastRows.clear();
 							}
+							
 
 						}
-						cout << "am here14\n";
 
 						//0 = buy
 						//1 = sell
 						//2 = hold
-						cout << Nodes.size() << "\n";
-						cout << Nodes[NumberOfHiddenLayers][0] << " " << Nodes[NumberOfHiddenLayers][1] << " " << Nodes[NumberOfHiddenLayers][2] << "\n";
+
+						//cout << Nodes[NumberOfHiddenLayers][0] << " " << Nodes[NumberOfHiddenLayers][1] << " " << Nodes[NumberOfHiddenLayers][2] << "\n";
 
 						if (Nodes[NumberOfHiddenLayers][0] >= Nodes[NumberOfHiddenLayers][1] && Nodes[NumberOfHiddenLayers][0] >= Nodes[NumberOfHiddenLayers][2]) {
-							cout << "am here15\n";
+							//cout << "am here15\n";
 							Holdings = (Capital * Nodes[NumberOfHiddenLayers][0]) / All[RandomFilePicker][RandomStartingPoint + day + 1].Open;
 						}
 						if (Nodes[NumberOfHiddenLayers][1] >= Nodes[NumberOfHiddenLayers][2] && Nodes[NumberOfHiddenLayers][1] >= Nodes[NumberOfHiddenLayers][0]) {
-							cout << "am here16\n";
+							//cout << "am here16\n";
 							Capital = (Holdings * Nodes[NumberOfHiddenLayers][1]) * All[RandomFilePicker][RandomStartingPoint + day + 1].Open;
+						}
+						if (Nodes[NumberOfHiddenLayers][2] >= Nodes[NumberOfHiddenLayers][1] && Nodes[NumberOfHiddenLayers][2] >= Nodes[NumberOfHiddenLayers][0]) {
+							//cout << "am here17\n";
 						}
 
 						/*if (Nodes[NumberOfHiddenLayers + 1][2] >= Nodes[NumberOfHiddenLayers + 1][0] && Nodes[NumberOfHiddenLayers + 1][2] >= Nodes[NumberOfHiddenLayers + 1][1]) {
@@ -1104,6 +1109,8 @@ int main() {
 						a = 1 / (1 + pow(e, -a));			//must use Relu instead
 						b = 1 / (1 + pow(e, -b));
 						//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";*/
+						Nodes.clear();
+						cout << day << "day\n";
 					}
 					//evaluation of the run
 
@@ -1121,16 +1128,20 @@ int main() {
 
 /////////////////////////////functions//////////////////////////
 long double shrinking(long double input) {
-	while (input >= 10 && input <= -10) {
+	/*while (input >= 10 && input <= -10) {
 		input = input / 10;
 	}
+	return input;*/
+	input = input;
 	return input;
 }
 
 int shrinkin(int input) {
-	while (input >= 10 && input <= -10) {
+	/*while (input >= 10 && input <= -10) {
 		input = input / 10;
 	}
+	return input;*/
+	input = input;
 	return input;
 }
 
