@@ -13,6 +13,8 @@
 #include <iomanip>
 #include <ctime>
 #include <cmath>
+#include <stdlib.h>
+#include <chrono>
 //#include <algorithm>
 #include "Structs.h"
 
@@ -82,6 +84,7 @@ istream& operator>>(istream& str, CSVRow& data)
 vector <vector <float>> bias;
 
 
+
 int main() {
 	//////////training length///////////////
 	int SampleSize = 1000;												//Add here the number of tries for choosing the company/How many companies will be learned on
@@ -93,13 +96,15 @@ int main() {
 	int NumberOfinputs = 50;
 	int NumberOfOutputs = 3;
 	double UpAndDownScaling = 2;
-	long double LearningRate = 0;
+	long double LearningRate = 0.005;
 	double NumberOfWeights = 0;
 	int precision = 10000;
 	vector <vector <float>> weights;
+	vector <vector <float>> AdjustedWeights;
+
 
 	//////////result evaluation/////////////
-	//int PercentageGain = 100;											//How many percent gained in the time frame
+	int PercentageGain = 100;											//How many percent gained in the time frame
 	int StartingCapital = 25000;										//with how much money does the model start
 	vector <string> FilePaths;
 	string Path = "LearningData" /*"test"*/;							//Location of training data
@@ -107,7 +112,7 @@ int main() {
 
 	//vector <float> ZerothLayer;										//substuitude for vector of all layers
 
-	const long double e = 2.71828182845904523536;
+	//const long double e = 2.71828182845904523536;
 	
 
 	cout << "Do you want to train the model with the current data?" << endl << "Yes/No" << endl;
@@ -129,36 +134,36 @@ int main() {
 			double Longest = NumberOfinputs * UpAndDownScaling * NumberOfinputs * UpAndDownScaling;
 
 			if (aqua == 0) {
-				//cout << "am here8" << "\n";
+				cout << "am here8" << "\n";
 				for (size_t i = 0; i < Long; i++) {
-					OL = (float(rand()) / (float((RAND_MAX)) * a) / 10000);
+					OL = (float(rand()) / (float((RAND_MAX)) * a) /*/ 10000*/);
 					LayerWeights.push_back(OL);
 				}
+				weights.push_back(LayerWeights);
+				//cout << "chceck repetition" << aqua << endl;
 			}
 
-			if (aqua == (NumberOfHiddenLayers + 1)) {
-				//cout << "am here9" << "\n";
+			if (aqua == NumberOfHiddenLayers) {
+				cout << "am here9" << "\n";
 				for (size_t i = 0; i < Short; i++) {
 					OL = (float(rand()) / float((RAND_MAX)) * a);
 					LayerWeights.push_back(OL);
 				}
+				weights.push_back(LayerWeights);
+				//LayerWeights.clear;
+				//cout << "chceck repetiton" << aqua << endl;
 			}
 
-			if (0 < aqua < (NumberOfHiddenLayers + 1)) {
-				//cout << "am here10" << "\n";
+			if (0 < aqua && aqua < NumberOfHiddenLayers) {
+				cout << "am here10" << "\n";
 				for (size_t i = 0; i < Longest; i++) {
 					//cout << i << "\n";
 					OL = (float(rand()) / float((RAND_MAX)) * a);
-					//cout << i << "haha" << "\n";
-					//cout << aqua << "lasflaskdjf" << "\n";
-					//cout << OL << typeid(OL).name() << " this is inwriten value\n";
 					LayerWeights.push_back(OL);
-
-					//cout << i << " lool" << "\n";
 				}
 				weights.push_back(LayerWeights);
-				//cout << "am here 11" << "\n";
-				LayerWeights.clear();
+				//LayerWeights.clear();
+				//cout << "check repetition" << aqua << endl;
 			}
 		}
 		/*for (int i = 0; i < weights[1].size(); i++) {
@@ -271,6 +276,8 @@ int main() {
 
 
 		for (int i = 1; i <= SampleSize; i++) {																							// Random file picker
+			auto t1 = chrono::high_resolution_clock::now();
+
 			random_device dev;
 			mt19937 rng(dev());
 			uniform_int_distribution<mt19937::result_type> dist6(0, All.size() - 1);													 // distribution range of 0 - number of imported companies 
@@ -960,22 +967,25 @@ int main() {
 						;
 				}*/
 																																				//environment creation
-					long double Capital = StartingCapital;																						//in money
-					long double Holdings = 0;																									//in stocks owned																												
-					vector <vector  <long double>> Nodes;
+				long double Capital = StartingCapital;																						//in money
+				long double Holdings = 0;																									//in stocks owned																												
+				vector <vector  <long double>> Nodes;
+				cout << "noob\n";
+																																			//Performing the run
+				for (size_t day = 0; day < LengthOfTrainingPeriod; day++) {
+					cout << "legend\n";
+					//long double BuingPower = 0;
 
-					for (size_t day = 0; day < LengthOfTrainingPeriod; day++) {
-
-						//long double BuingPower = 0;
-
-						for (int layer = 0; layer < (NumberOfHiddenLayers + 1); layer++) {
+					for (int layer = 0; layer < (NumberOfHiddenLayers + 1); layer++) {
 							
-							if (layer == 0) {
-								
-								vector <long double> FirstRow;
-								for (int input = 0; input < (NumberOfinputs * 2); input++) {
+						if (layer == 0) {
+							//cout << "this is 0 to first\n";
+							vector <long double> FirstRow;
+							for (int input = 0; input < (NumberOfinputs * UpAndDownScaling); input++) {
 
 									long double result = 0;
+
+									//cout << Holdings << " :Holdings " << Capital << " :Capital\n";
 
 									result = ((weights[layer][input] * InputValues[day].InputNodeOpen) +
 										(weights[layer][input + NumberOfinputs] * InputValues[day].InputNodeClose) +
@@ -1032,17 +1042,18 @@ int main() {
 									result = round(result * precision) / precision;
 									FirstRow.push_back(result);
 								}
-								Nodes.push_back(FirstRow);
-								FirstRow.clear();
-							}
-
-							if (layer > 0 && layer < NumberOfHiddenLayers) {
+							Nodes.push_back(FirstRow);
+							FirstRow.clear();
+						}
+					
+						if (layer > 0 && layer < NumberOfHiddenLayers) {
+							//cout << layer << "this is the middle\n";
 								vector <long double> MidleRows;
-								for (int out = 0; out < (NumberOfinputs * 2); out++) {
+								for (int out = 0; out < (NumberOfinputs * UpAndDownScaling); out++) {
 									long double result = 0;
 
-									for (int input = 0; input < (NumberOfinputs * 2); input++) {
-										result = result + (Nodes[layer - 1][input] * weights[layer][out * input]);
+									for (int input = 0; input < (NumberOfinputs * UpAndDownScaling); input++) {
+										result = result + (Nodes[layer - 1][input] * weights[layer][out + (100 * input)]);
 									}
 									long double ResultPlusOne = result + 1;
 									result = (result / ResultPlusOne);
@@ -1052,12 +1063,14 @@ int main() {
 								Nodes.push_back(MidleRows);
 								
 							}
-							if (layer == (NumberOfHiddenLayers)) {
+						if (layer == (NumberOfHiddenLayers)) {
+							cout << layer << " this is the 300 conection\n";
 								vector <long double> LastRows;
 								for (int output = 0; output < NumberOfOutputs; output++) {
 									long double result = 0;
 									for (int input = 0; input < (NumberOfinputs * 2); input++) {
-										result = result + (Nodes[layer - 1][input] * weights[layer][input * output]);
+										result = result + (Nodes[layer - 1][input] * weights[layer][input + (100* output)]);
+										//cout << input + (100 * output) << "\n";
 									}
 									long double ResultPlusOne = result + 1;
 									result = (result / ResultPlusOne);
@@ -1066,57 +1079,128 @@ int main() {
 								}
 								Nodes.push_back(LastRows);
 								LastRows.clear();
-							}
-							
-
 						}
+							
+						//cout << "check of repetition\n";
+					}
 
-						//0 = buy
-						//1 = sell
-						//2 = hold
+					//0 = buy
+					//1 = sell
+					//2 = hold
 
-						//cout << Nodes[NumberOfHiddenLayers][0] << " " << Nodes[NumberOfHiddenLayers][1] << " " << Nodes[NumberOfHiddenLayers][2] << "\n";
+					cout << Nodes[NumberOfHiddenLayers][0] << " " << Nodes[NumberOfHiddenLayers][1] << " " << Nodes[NumberOfHiddenLayers][2] << "\n";
 
-						if (Nodes[NumberOfHiddenLayers][0] >= Nodes[NumberOfHiddenLayers][1] && Nodes[NumberOfHiddenLayers][0] >= Nodes[NumberOfHiddenLayers][2]) {
+					if (Nodes[NumberOfHiddenLayers][0] >= Nodes[NumberOfHiddenLayers][1] && Nodes[NumberOfHiddenLayers][0] >= Nodes[NumberOfHiddenLayers][2]) {
 							//cout << "am here15\n";
 							Holdings = (Capital * Nodes[NumberOfHiddenLayers][0]) / All[RandomFilePicker][RandomStartingPoint + day + 1].Open;
 						}
-						if (Nodes[NumberOfHiddenLayers][1] >= Nodes[NumberOfHiddenLayers][2] && Nodes[NumberOfHiddenLayers][1] >= Nodes[NumberOfHiddenLayers][0]) {
+					if (Nodes[NumberOfHiddenLayers][1] >= Nodes[NumberOfHiddenLayers][2] && Nodes[NumberOfHiddenLayers][1] >= Nodes[NumberOfHiddenLayers][0]) {
 							//cout << "am here16\n";
-							Capital = (Holdings * Nodes[NumberOfHiddenLayers][1]) * All[RandomFilePicker][RandomStartingPoint + day + 1].Open;
+							Capital = Capital + ((Holdings * Nodes[NumberOfHiddenLayers][1]) * All[RandomFilePicker][RandomStartingPoint + day + 1].Open);
+							Holdings = Holdings - Holdings * Nodes[NumberOfHiddenLayers][1];
 						}
-						if (Nodes[NumberOfHiddenLayers][2] >= Nodes[NumberOfHiddenLayers][1] && Nodes[NumberOfHiddenLayers][2] >= Nodes[NumberOfHiddenLayers][0]) {
+					if (Nodes[NumberOfHiddenLayers][2] >= Nodes[NumberOfHiddenLayers][1] && Nodes[NumberOfHiddenLayers][2] >= Nodes[NumberOfHiddenLayers][0]) {
 							//cout << "am here17\n";
+							Capital = Capital; Holdings = Holdings;
 						}
-
-						/*if (Nodes[NumberOfHiddenLayers + 1][2] >= Nodes[NumberOfHiddenLayers + 1][0] && Nodes[NumberOfHiddenLayers + 1][2] >= Nodes[NumberOfHiddenLayers + 1][1]) {
-
-						}*/
-
-						/*long double a = 0;
-						long double b = 0;
-
-						while (InputNodeClose[i] > 1) {
-							InputNodeClose[i] = InputNodeClose[i] / 10;
-						}
-						while (InputNodeOpen[i] > 1) {
-							InputNodeOpen[i] = InputNodeOpen[i] / 10;
-						}
-
-						a = InputNodeClose[i] * ZerothLayer[i] + InputNodeOpen[i] * ZerothLayer[i + 1];
-						b = InputNodeClose[i] * ZerothLayer[i + 2] + InputNodeOpen[i] * ZerothLayer[i + 3];
-
-						a = 1 / (1 + pow(e, -a));			//must use Relu instead
-						b = 1 / (1 + pow(e, -b));
-						//cout << "this is a: " << a << "\n" << "this is b: " << b << "\n";*/
-						Nodes.clear();
-						cout << day << "day\n";
-					}
-					//evaluation of the run
-
+						
+					cout << day << "day\n";
 				}
+
+
+				cout << "aaaaaaaaaaah\n";																									
+				long double GainLose = (-1) * (StartingCapital - (Capital + (Holdings * All[RandomFilePicker][RandomStartingPoint + LengthOfTrainingPeriod].Open)));
+				long double Error = 0.5 * ((PercentageGain / 100 * StartingCapital) - GainLose);
+				cout << "long error" << Error << "\n";
+									
+																																				//evaluation of the run
+				for (int layer = NumberOfHiddenLayers; layer >= 0; layer--) {
+					
+					cout << layer << " :layer\n";
+						
+					if (layer == NumberOfHiddenLayers) {
+						vector <float> AdjustedWeightsForLayer;
+						cout << "this is the short one\n";
+						for (int ZeroToAmount = 0; ZeroToAmount < NumberOfOutputs; ZeroToAmount++) {
+							for (int Output = 0; Output < NumberOfinputs * UpAndDownScaling; Output++) {
+								AdjustedWeightsForLayer.push_back( /*weights[layer][Output + (100 * ZeroToAmount)] =*/ (weights[layer][Output + (100 * ZeroToAmount)] - (LearningRate * Nodes[layer][ZeroToAmount] * ((PercentageGain / 100 * StartingCapital) - GainLose))));
+								//cout << Output + (100 * ZeroToAmount) << "\n";
+							}
+							//Sleep(700);
+						}
+						AdjustedWeights.push_back(AdjustedWeightsForLayer);
+					}
+
+					if (layer >= 1 && layer < NumberOfHiddenLayers) {
+						vector <float> AdjustedWeightsForLayer;
+						cout << layer << "this is the middle ones\n";
+						for (int ZeroToAmount = 0; ZeroToAmount < NumberOfinputs * UpAndDownScaling; ZeroToAmount++) {
+							for (int Output = 0; Output < NumberOfinputs * UpAndDownScaling; Output++) {
+								AdjustedWeightsForLayer.push_back( /*weights[layer][Output + (100 * ZeroToAmount)] =*/ (weights[layer][Output + (100 * ZeroToAmount)] - (LearningRate * Nodes[layer][ZeroToAmount] * ((PercentageGain / 100 * StartingCapital) - GainLose))));
+								//cout << Output + (100 * ZeroToAmount) << "\n";
+							}
+						}
+						AdjustedWeights.push_back(AdjustedWeightsForLayer);
+					}
+
+					if (layer == 0) {
+						vector <float> AdjustedWeightsForLayer;
+						//cout << "am here29\n";
+						for (int ZeroToAmount = 0; ZeroToAmount < NumberOfinputs; ZeroToAmount++) {
+							//cout << "am here29.1\n";
+							for (int Output = 0; Output < (NumberOfinputs * UpAndDownScaling); Output++) {
+								//cout << "am here29.2\n" << weights[layer][Output + (100 * ZeroToAmount)] << " prewious weight\n" << Nodes[layer].size() << Nodes[layer][ZeroToAmount]  <<" Node from the previous layer\n";
+
+								AdjustedWeightsForLayer.push_back( /*weights[layer][Output + (100 * ZeroToAmount)] =*/ (weights[layer][Output + (100 * ZeroToAmount)] - (LearningRate * Nodes[layer][ZeroToAmount] * ((PercentageGain / 100 * StartingCapital) - GainLose))));
+								//cout << "am here29.3\n";
+								cout << Output + (100 * ZeroToAmount) << "ehhhh\n";
+							}
+						}
+						AdjustedWeights.push_back(AdjustedWeightsForLayer);
+					}
+					cout << "repetition chceck\n";
+					//Sleep(50);
+				}
+
+				cout << "am here30\n";
+				cout << i;
+				string NumberOfTryes = to_string(i);
+				string Base = "ploted_values/";
+				string FileExtension = ".txt";
+				Base = Base + NumberOfTryes + FileExtension;
+
+				fstream WeightsFile(Base, ios::app);
+				if (WeightsFile.is_open())
+				{
+					for (int layer = 0; layer < weights.size(); layer++) {
+						for (int NodePosition = 0; NodePosition < weights[layer].size(); NodePosition++) {
+							WeightsFile << weights[layer][NodePosition] << ",";
+						}
+						WeightsFile << "\n";
+					}
+					//WeightsFile << "This is a line.\n";
+					//WeightsFile << "This is another line.\n";
+					WeightsFile.close();
+				}
+
+				cout << "am here33\n";
+				
+				reverse(AdjustedWeights.begin(), AdjustedWeights.end());
+				cout << "am here34\n";
+
+				for (int iter = 0; iter < weights.size(); iter++) {
+					cout << weights.size() << " " << AdjustedWeights.size() << "\n";
+					//for (int seciter = 0; seciter < weights[iter].size(); seciter++) {
+					cout << weights[iter].size() << " " << AdjustedWeights[iter].size() << "\n";
+					//weights[iter][seciter] = AdjustedWeights[iter][seciter];
+				}	
 			}
+			auto t2 = chrono::high_resolution_clock::now();
+			chrono::duration<double, std::milli> TimeLength = t2 - t1;
+			cout << "this is time in milliseconds: " << TimeLength.count() << "\n";
+			Sleep(5000);
 		}
+	}
 
 
 	

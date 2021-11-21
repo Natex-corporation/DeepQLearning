@@ -1,20 +1,37 @@
 ﻿  DeepQlearning.cpp
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(147,10): warning C4804: <: Potenciálně nebezpečné používání typu bool v operaci
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(182,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(248,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(249,22): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(258,21): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(259,22): warning C4018: <: signed/unsigned – neshoda
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(331,69): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(332,70): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(333,69): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(334,68): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(336,71): warning C4244: =: long double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(661,25): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(662,26): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(663,26): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(804,23): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(805,24): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(806,24): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
-D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(967,31): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(187,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(253,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(254,22): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(263,21): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(264,22): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(338,69): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(339,70): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(340,69): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(341,68): warning C4244: =: long double se převádí na float; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(343,71): warning C4244: =: long double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(668,25): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(669,26): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(670,26): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(811,23): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(812,24): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(813,24): warning C4244: argument: double se převádí na int; může dojít ke ztrátě dat.
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(975,30): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(1126,143): warning C4244: argument: long double se převádí na _Ty; může dojít ke ztrátě dat.
+          with
+          [
+              _Ty=float
+          ]
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(1139,143): warning C4244: argument: long double se převádí na _Ty; může dojít ke ztrátě dat.
+          with
+          [
+              _Ty=float
+          ]
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(1154,143): warning C4244: argument: long double se převádí na _Ty; může dojít ke ztrátě dat.
+          with
+          [
+              _Ty=float
+          ]
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(1175,32): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(1176,47): warning C4018: <: signed/unsigned – neshoda
+D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\DeepQlearning.cpp(1191,29): warning C4018: <: signed/unsigned – neshoda
   DeepQlearning.vcxproj -> D:\AA tomovy projekty\programi\ProjectsInProgress\DeepQlearning\Debug\DeepQlearning.exe
